@@ -104,13 +104,12 @@ const run = async () => {
   })
 
   mockXeroData.Items.map(async (product) => {
-    const document = await sanityClient.createIfNotExists({
+    const document = await sanityClient.createOrReplace({
       _id: product.ItemID,
       _type: 'product',
       name: product.Name,
     })
-    // console.log(`Created product ${document.name} at ${document._createdAt}`)
-    console.log(document)
+    console.log(`Processed product ${document.name} at ${document._updatedAt}`)
   })
 
   // Fetch Xero products
