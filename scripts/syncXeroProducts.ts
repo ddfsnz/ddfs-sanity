@@ -103,22 +103,21 @@ const run = async () => {
     apiVersion: '2025-05-01',
   })
 
+  const allDocs = await sanityClient.fetch<{_id: string}[]>(
+    `*[_type == "product" && _id in $ids]`,
+    {
+      ids: mockXeroData.Items.map((product) => product.ItemID),
+    },
+    {
+      perspective: 'drafts',
+    },
+  )
+  console.log(`Fetched ${allDocs.length} products from Sanity`)
+
   for (const product of mockXeroData.Items) {
     try {
-      const [publishedDoc, draftDoc] = await Promise.all([
-        sanityClient.fetch(`*[_type == "product" && _id == $id][0]`, {
-          id: product.ItemID,
-        }),
-        sanityClient.fetch(
-          `*[_type == "product" && _id == $id][0]`,
-          {
-            id: product.ItemID,
-          },
-          {
-            perspective: 'drafts',
-          },
-        ),
-      ])
+      const publishedDoc = allDocs.find((doc) => doc._id === product.ItemID)
+      const draftDoc = allDocs.find((doc) => doc._id === `drafts.${product.ItemID}`)
       console.log('publishedDoc', publishedDoc)
       console.log('draftDoc', draftDoc)
 
