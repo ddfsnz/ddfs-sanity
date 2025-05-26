@@ -126,7 +126,7 @@ const run = async () => {
     try {
       const publishedProduct = publishedProducts.find((entry) => entry._id === product.ItemID)
       console.log('publishedDoc', publishedProduct)
-      const draftProduct = draftProducts.find((entry) => entry._id === `drafts.${product.ItemID}`)
+      const draftProduct = draftProducts.find((entry) => entry._id === product.ItemID)
       console.log('draftDoc', draftProduct)
 
       let document
