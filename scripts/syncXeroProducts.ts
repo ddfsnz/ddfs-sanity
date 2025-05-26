@@ -106,11 +106,11 @@ const run = async () => {
   for (const product of mockXeroData.Items) {
     try {
       const [publishedDoc, draftDoc] = await Promise.all([
-        sanityClient.fetch(`*[_type == "product" && _id == $id][0]`, {
-          id: product.ItemID,
+        sanityClient.fetch(`*[_type == "product" && _id == $publishedId][0]`, {
+          publishedId: product.ItemID,
         }),
-        sanityClient.fetch(`*[_type == "product" && _id == $id][0]`, {
-          id: `drafts.${product.ItemID}`,
+        sanityClient.fetch(`*[_type == "product" && _id == $draftId][0]`, {
+          draftId: `drafts.${product.ItemID}`,
         }),
       ])
 
