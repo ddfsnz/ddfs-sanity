@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc syncXeroProducts.ts --outDir build"
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
