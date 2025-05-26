@@ -26,7 +26,7 @@ const mockXeroData = {
         TaxType: 'INPUT2',
       },
       SalesDetails: {
-        UnitPrice: 72.0,
+        UnitPrice: 70.0,
         AccountCode: '200',
         TaxType: 'OUTPUT2',
       },
