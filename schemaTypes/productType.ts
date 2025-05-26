@@ -7,15 +7,46 @@ export const productType = defineType({
   fields: [
     defineField({
       name: 'name',
-      title: 'Price',
+      title: 'Name',
+      description: 'Updated automatically from Xero',
       type: 'string',
+      readOnly: true,
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'images',
+      title: 'Images',
+      type: 'array',
+      of: [{type: 'image'}],
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+    }),
+    defineField({
       name: 'price',
-      title: 'Price',
+      title: 'Price (excl. GST)',
+      description: 'Updated automatically from Xero',
       type: 'number',
+      readOnly: true,
       validation: (rule) => rule.required().min(0),
+    }),
+    defineField({
+      name: 'stock',
+      title: 'Stock',
+      description: 'Updated automatically from Xero',
+      type: 'number',
+      readOnly: true,
+      validation: (rule) => rule.required().min(0),
+    }),
+    defineField({
+      name: 'code',
+      title: 'Code',
+      description: 'Updated automatically from Xero',
+      type: 'string',
+      readOnly: true,
+      validation: (rule) => rule.required(),
     }),
   ],
 })

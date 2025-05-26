@@ -62,30 +62,6 @@ const mockXeroData = {
       IsSold: true,
       IsPurchased: true,
     },
-    {
-      ItemID: '13b0ea2c-a913-42b1-a892-4a73343da9f9',
-      Code: '000002',
-      Description: 'Calvin Klein Eternity EDP For Him 100ml',
-      PurchaseDescription: 'Calvin Klein Eternity EDP For Him 100ml',
-      UpdatedDateUTC: '/Date(1724383341867+0000)/',
-      PurchaseDetails: {
-        UnitPrice: 32.75,
-        COGSAccountCode: '310',
-        TaxType: 'INPUT2',
-      },
-      SalesDetails: {
-        UnitPrice: 48.0,
-        AccountCode: '200',
-        TaxType: 'OUTPUT2',
-      },
-      Name: 'Calvin Klein Eternity EDP For Him 100ml [FAKE]',
-      IsTrackedAsInventory: true,
-      InventoryAssetAccountCode: '630',
-      TotalCostPool: 0.0,
-      QuantityOnHand: 0.0,
-      IsSold: true,
-      IsPurchased: true,
-    },
   ],
 }
 
@@ -131,13 +107,23 @@ const run = async () => {
       if (publishedProduct) {
         document = await sanityClient
           .patch(product.ItemID)
-          .set({name: product.Name, price: product.SalesDetails.UnitPrice})
+          .set({
+            name: product.Name,
+            price: product.SalesDetails.UnitPrice,
+            stock: product.QuantityOnHand,
+            code: product.Code,
+          })
           .commit()
         console.log(`✅ Updated published product [${document.name}]`)
       } else if (draftProduct) {
         document = await sanityClient
           .patch(`drafts.${product.ItemID}`)
-          .set({name: product.Name, price: product.SalesDetails.UnitPrice})
+          .set({
+            name: product.Name,
+            price: product.SalesDetails.UnitPrice,
+            stock: product.QuantityOnHand,
+            code: product.Code,
+          })
           .commit()
         console.log(`✅ Updated draft product [${document.name}]`)
       } else {
@@ -146,6 +132,8 @@ const run = async () => {
           _type: 'product',
           name: product.Name,
           price: product.SalesDetails.UnitPrice,
+          stock: product.QuantityOnHand,
+          code: product.Code,
         })
         console.log(`✅ Created draft product [${document.name}]`)
       }
