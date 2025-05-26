@@ -26,4 +26,5 @@ jobs:
         env:
           XERO_CLIENT_ID: ${{ secrets.XERO_CLIENT_ID }}
           XERO_CLIENT_SECRET: ${{ secrets.XERO_CLIENT_SECRET }}
+          SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
         run: node scripts/build/syncXeroProducts.js

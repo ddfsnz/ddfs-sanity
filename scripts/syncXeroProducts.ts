@@ -65,7 +65,7 @@ function getEnvVar(name: string) {
 //   ],
 // }
 
-const main = async () => {
+const run = async () => {
   // getEnvVar('XERO_CLIENT_ID')
   // getEnvVar('XERO_CLIENT_SECRET')
 
@@ -86,4 +86,4 @@ const main = async () => {
   // patch relevant product fields
 }
 
-main()
+run()
