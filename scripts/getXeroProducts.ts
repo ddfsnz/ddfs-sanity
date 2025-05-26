@@ -9,7 +9,10 @@ function getEnvVar(name: string, required = false) {
 }
 
 const main = async () => {
-  console.log(`GITHUB_TOKEN: ${getEnvVar('GITHUB_TOKEN') ? '✅ Available' : '❌ Missing'}`)
+  console.log(`XERO_CLIENT_ID: ${getEnvVar('XERO_CLIENT_ID') ? '✅ Available' : '❌ Missing'}`)
+  console.log(
+    `XERO_CLIENT_SECRET: ${getEnvVar('XERO_CLIENT_SECRET') ? '✅ Available' : '❌ Missing'}`,
+  )
 }
 
 main()
