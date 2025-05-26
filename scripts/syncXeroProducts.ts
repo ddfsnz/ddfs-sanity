@@ -103,14 +103,18 @@ const run = async () => {
     apiVersion: '2025-05-01',
   })
 
-  mockXeroData.Items.map(async (product) => {
-    const document = await sanityClient.createOrReplace({
-      _id: product.ItemID,
-      _type: 'product',
-      name: product.Name,
-    })
-    console.log(`Processed product ${document.name} at ${document._updatedAt}`)
-  })
+  for (const product of mockXeroData.Items) {
+    try {
+      const document = await sanityClient.createIfNotExists({
+        _id: product.ItemID,
+        _type: 'product',
+        name: product.Name,
+      })
+      console.log(`✅ Processed product ${document.name} at ${document._updatedAt}`)
+    } catch (error) {
+      console.error(`❌ Failed to process product ${product.Name} (ID: ${product.ItemID}):`, error)
+    }
+  }
 
   // Fetch Xero products
   // Transform for Sanity schema
