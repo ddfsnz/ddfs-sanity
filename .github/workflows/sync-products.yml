@@ -17,11 +17,13 @@ jobs:
         with:
           node-version: '22'
       - name: Install Dependencies
+        working-directory: ./scripts
         run: npm ci
       - name: Build TypeScript
-        run: npm run build:scripts
+        working-directory: ./scripts
+        run: npm run build
       - name: Run Script
         env:
           XERO_CLIENT_ID: ${{ secrets.XERO_CLIENT_ID }}
           XERO_CLIENT_SECRET: ${{ secrets.XERO_CLIENT_SECRET }}
-        run: node dist/getXeroProducts.js
+        run: node scripts/build/getXeroProducts.js
