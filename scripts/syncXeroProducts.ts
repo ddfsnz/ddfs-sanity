@@ -103,7 +103,15 @@ const run = async () => {
     apiVersion: '2025-05-01',
   })
 
-  const allDocs = await sanityClient.fetch<{_id: string}[]>(
+  const publishedProducts = await sanityClient.fetch<{_id: string}[]>(
+    `*[_type == "product" && _id in $ids]`,
+    {
+      ids: mockXeroData.Items.map((product) => product.ItemID),
+    },
+  )
+  console.log(`Fetched ${publishedProducts.length} published products from Sanity`)
+
+  const draftProducts = await sanityClient.fetch<{_id: string}[]>(
     `*[_type == "product" && _id in $ids]`,
     {
       ids: mockXeroData.Items.map((product) => product.ItemID),
@@ -112,17 +120,17 @@ const run = async () => {
       perspective: 'drafts',
     },
   )
-  console.log(`Fetched ${allDocs.length} products from Sanity`)
+  console.log(`Fetched ${draftProducts.length} draft products from Sanity`)
 
   for (const product of mockXeroData.Items) {
     try {
-      const publishedDoc = allDocs.find((doc) => doc._id === product.ItemID)
-      const draftDoc = allDocs.find((doc) => doc._id === `drafts.${product.ItemID}`)
-      console.log('publishedDoc', publishedDoc)
-      console.log('draftDoc', draftDoc)
+      const publishedProduct = publishedProducts.find((entry) => entry._id === product.ItemID)
+      console.log('publishedDoc', publishedProduct)
+      const draftProduct = draftProducts.find((entry) => entry._id === `drafts.${product.ItemID}`)
+      console.log('draftDoc', draftProduct)
 
       let document
-      if (publishedDoc) {
+      if (publishedProduct) {
         document = await sanityClient
           .patch(product.ItemID)
           .set({
@@ -131,7 +139,7 @@ const run = async () => {
           })
           .commit()
         console.log(`✅ Updated published product [${document.name}] at ${document._updatedAt}`)
-      } else if (draftDoc) {
+      } else if (draftProduct) {
         document = await sanityClient
           .patch(`drafts.${product.ItemID}`)
           .set({name: product.Name, price: product.SalesDetails.UnitPrice})
