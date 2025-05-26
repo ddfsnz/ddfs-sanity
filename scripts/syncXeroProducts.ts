@@ -114,7 +114,8 @@ const run = async () => {
         returnDocuments: true,
       },
     )
-    console.log(`Created product ${document.name} at ${document._createdAt}`)
+    // console.log(`Created product ${document.name} at ${document._createdAt}`)
+    console.log(document)
   })
 
   // Fetch Xero products
