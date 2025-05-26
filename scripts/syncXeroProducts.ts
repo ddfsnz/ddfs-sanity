@@ -113,6 +113,8 @@ const run = async () => {
           draftId: `drafts.${product.ItemID}`,
         }),
       ])
+      console.log('publishedDoc', publishedDoc)
+      console.log('draftDoc', draftDoc)
 
       let document
       if (publishedDoc) {
