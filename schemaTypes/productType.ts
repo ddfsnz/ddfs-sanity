@@ -7,8 +7,15 @@ export const productType = defineType({
   fields: [
     defineField({
       name: 'name',
+      title: 'Price',
       type: 'string',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'price',
+      title: 'Price',
+      type: 'number',
+      validation: (rule) => rule.required().min(0),
     }),
   ],
 })

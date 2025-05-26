@@ -106,9 +106,10 @@ const run = async () => {
   for (const product of mockXeroData.Items) {
     try {
       const document = await sanityClient.createIfNotExists({
-        _id: product.ItemID,
+        _id: `drafts.${product.ItemID}`,
         _type: 'product',
         name: product.Name,
+        price: product.SalesDetails.UnitPrice,
       })
       console.log(`✅ Processed ${document.name} at ${document._updatedAt}`)
     } catch (error) {
