@@ -125,18 +125,13 @@ const run = async () => {
   for (const product of mockXeroData.Items) {
     try {
       const publishedProduct = publishedProducts.find((entry) => entry._id === product.ItemID)
-      console.log('publishedDoc', publishedProduct)
       const draftProduct = draftProducts.find((entry) => entry._id === product.ItemID)
-      console.log('draftDoc', draftProduct)
 
       let document
       if (publishedProduct) {
         document = await sanityClient
           .patch(product.ItemID)
-          .set({
-            name: product.Name,
-            price: product.SalesDetails.UnitPrice,
-          })
+          .set({name: product.Name, price: product.SalesDetails.UnitPrice})
           .commit()
         console.log(`✅ Updated published product [${document.name}] at ${document._updatedAt}`)
       } else if (draftProduct) {
