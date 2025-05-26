@@ -85,7 +85,7 @@ const run = async () => {
       ids: mockXeroData.Items.map((product) => product.ItemID),
     },
   )
-  console.log(`Fetched ${publishedProducts.length} published products from Sanity`)
+  console.log(`⬇️ Fetched ${publishedProducts.length} published products from Sanity`)
 
   const draftProducts = await sanityClient.fetch<{_id: string}[]>(
     `*[_type == "product" && _id in $ids]`,
@@ -96,7 +96,7 @@ const run = async () => {
       perspective: 'drafts',
     },
   )
-  console.log(`Fetched ${draftProducts.length} draft products from Sanity`)
+  console.log(`⬇️ Fetched ${draftProducts.length} draft products from Sanity`)
 
   for (const product of mockXeroData.Items) {
     try {
