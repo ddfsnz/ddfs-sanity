@@ -109,9 +109,15 @@ const run = async () => {
         sanityClient.fetch(`*[_type == "product" && _id == $publishedId][0]`, {
           publishedId: product.ItemID,
         }),
-        sanityClient.fetch(`*[_type == "product" && _id == $draftId][0]`, {
-          draftId: `drafts.${product.ItemID}`,
-        }),
+        sanityClient.fetch(
+          `*[_type == "product" && _id == $draftId][0]`,
+          {
+            draftId: `drafts.${product.ItemID}`,
+          },
+          {
+            perspective: 'drafts',
+          },
+        ),
       ])
       console.log('publishedDoc', publishedDoc)
       console.log('draftDoc', draftDoc)
