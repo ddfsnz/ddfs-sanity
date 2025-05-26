@@ -6,14 +6,6 @@ export const productType = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'name',
-      title: 'Name',
-      description: 'Updated automatically from Xero',
-      type: 'string',
-      readOnly: true,
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: 'images',
       title: 'Images',
       type: 'array',
@@ -23,6 +15,14 @@ export const productType = defineType({
       name: 'description',
       title: 'Description',
       type: 'text',
+    }),
+    defineField({
+      name: 'name',
+      title: 'Name',
+      description: 'Updated automatically from Xero',
+      type: 'string',
+      readOnly: true,
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'price',
