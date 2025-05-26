@@ -1,5 +1,5 @@
 name: Xero Integration
-run-name: Sync products from Xero stocklist
+run-name: Sync products from Xero
 on:
   push:
     branches: [main]
