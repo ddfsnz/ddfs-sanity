@@ -99,6 +99,7 @@ const run = async () => {
     projectId: sanityProjectId,
     token: sanityApiToken,
     dataset: 'production',
+    useCdn: false,
     apiVersion: '2025-05-01',
   })
 
