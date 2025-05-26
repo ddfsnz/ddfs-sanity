@@ -110,9 +110,9 @@ const run = async () => {
         _type: 'product',
         name: product.Name,
       })
-      console.log(`✅ Processed product ${document.name} at ${document._updatedAt}`)
+      console.log(`✅ Processed ${document.name} at ${document._updatedAt}`)
     } catch (error) {
-      console.error(`❌ Failed to process product ${product.Name} (ID: ${product.ItemID}):`, error)
+      console.error(`❌ Failed to process ${product.Name} (ID: ${product.ItemID}):`, error)
     }
   }
 
