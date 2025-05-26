@@ -70,8 +70,10 @@ const run = async () => {
   // getEnvVar('XERO_CLIENT_SECRET')
 
   const sanityProjectId = getEnvVar('SANITY_PROJECT_ID')
+  const sanityApiToken = getEnvVar('SANITY_API_TOKEN')
   const sanityClient = createClient({
     projectId: sanityProjectId,
+    token: sanityApiToken,
     dataset: 'production',
     useCdn: true,
     apiVersion: '2025-05-01',
