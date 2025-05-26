@@ -133,13 +133,13 @@ const run = async () => {
           .patch(product.ItemID)
           .set({name: product.Name, price: product.SalesDetails.UnitPrice})
           .commit()
-        console.log(`✅ Updated published product [${document.name}] at ${document._updatedAt}`)
+        console.log(`✅ Updated published product [${document.name}]`)
       } else if (draftProduct) {
         document = await sanityClient
           .patch(`drafts.${product.ItemID}`)
           .set({name: product.Name, price: product.SalesDetails.UnitPrice})
           .commit()
-        console.log(`✅ Updated draft product [${document.name}] at ${document._updatedAt}`)
+        console.log(`✅ Updated draft product [${document.name}]`)
       } else {
         document = await sanityClient.createIfNotExists({
           _id: `drafts.${product.ItemID}`,
@@ -147,7 +147,7 @@ const run = async () => {
           name: product.Name,
           price: product.SalesDetails.UnitPrice,
         })
-        console.log(`✅ Created draft product [${document.name}] at ${document._updatedAt}`)
+        console.log(`✅ Created draft product [${document.name}]`)
       }
     } catch (error) {
       console.error(
