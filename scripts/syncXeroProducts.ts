@@ -19,7 +19,9 @@ const run = async () => {
   })
   await xeroClient.getClientCredentialsToken()
 
-  const allXeroProducts = await xeroClient.accountingApi.getItems('', new Date('2025-01-01')) // Empty xeroTenantId for custom connection
+  const lastRunTimestamp = getEnvVar('LAST_RUN_TIMESTAMP')
+  console.log(`⬇️ Fetching products updated in Xero since last run: ${lastRunTimestamp}`)
+  const allXeroProducts = await xeroClient.accountingApi.getItems('', new Date(lastRunTimestamp)) // Empty xeroTenantId for custom connection
   if (!allXeroProducts) {
     console.error('❌ No products returned from Xero')
     return
