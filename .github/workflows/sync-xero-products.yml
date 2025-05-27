@@ -25,6 +25,7 @@ jobs:
           LAST_RUN=$(echo "$RESPONSE" | jq -r --arg current_run "${{ github.run_id }}" \
             'if .workflow_runs then (.workflow_runs[] | select(.id != ($current_run | tonumber)) | .updated_at) else empty end' \
             | head -n 1)
+          echo "Last run timestamp from workflow: $LAST_RUN"
 
           # Use 24 hours ago if no previous run found
           if [ -z "$LAST_RUN" ] || [ "$LAST_RUN" = "null" ]; then
