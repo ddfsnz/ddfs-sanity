@@ -78,7 +78,7 @@ const run = async () => {
   // console.log('tokenSet:', tokenSet)
 
   const xeroProducts = await xeroClient.accountingApi.getItems('')
-  console.log('xeroProducts:', xeroProducts.body)
+  console.log('xeroProducts:', xeroProducts.body.items?.length)
 
   const sanityProjectId = getEnvVar('SANITY_PROJECT_ID')
   const sanityApiToken = getEnvVar('SANITY_API_TOKEN')
