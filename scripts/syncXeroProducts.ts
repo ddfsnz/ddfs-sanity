@@ -1,4 +1,5 @@
 import {createClient} from '@sanity/client'
+import {XeroClient} from 'xero-node'
 
 function getEnvVar(name: string) {
   const value = process.env[name]
@@ -66,8 +67,18 @@ const mockXeroData = {
 }
 
 const run = async () => {
-  // getEnvVar('XERO_CLIENT_ID')
-  // getEnvVar('XERO_CLIENT_SECRET')
+  const xeroClientId = getEnvVar('XERO_CLIENT_ID')
+  const xeroClientSecret = getEnvVar('XERO_CLIENT_SECRET')
+  const xeroClient = new XeroClient({
+    clientId: xeroClientId,
+    clientSecret: xeroClientSecret,
+    grantType: 'client_credentials',
+  })
+  // const tokenSet = await xeroClient.getClientCredentialsToken()
+  // console.log('tokenSet:', tokenSet)
+
+  const xeroProducts = await xeroClient.accountingApi.getItems('')
+  console.log('xeroProducts:', xeroProducts.body)
 
   const sanityProjectId = getEnvVar('SANITY_PROJECT_ID')
   const sanityApiToken = getEnvVar('SANITY_API_TOKEN')
