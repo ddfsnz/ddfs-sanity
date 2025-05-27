@@ -81,20 +81,14 @@ const run = async () => {
 
   const publishedProducts = await sanityClient.fetch<{_id: string}[]>(
     `*[_type == "product" && _id in $ids]`,
-    {
-      ids: mockXeroData.Items.map((product) => product.ItemID),
-    },
+    {ids: mockXeroData.Items.map((product) => product.ItemID)},
   )
   console.log(`⬇️ Fetched ${publishedProducts.length} published products from Sanity`)
 
   const draftProducts = await sanityClient.fetch<{_id: string}[]>(
     `*[_type == "product" && _id in $ids]`,
-    {
-      ids: mockXeroData.Items.map((product) => product.ItemID),
-    },
-    {
-      perspective: 'drafts',
-    },
+    {ids: mockXeroData.Items.map((product) => product.ItemID)},
+    {perspective: 'drafts'},
   )
   console.log(`⬇️ Fetched ${draftProducts.length} draft products from Sanity`)
 
