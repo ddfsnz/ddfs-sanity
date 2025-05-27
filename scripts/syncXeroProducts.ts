@@ -19,13 +19,21 @@ const run = async () => {
   })
   await xeroClient.getClientCredentialsToken()
 
-  const allXeroProducts = await xeroClient.accountingApi.getItems('')
-  console.log(`⬇️ Fetched ${allXeroProducts.body.items?.length} products from Xero`)
-  const filteredXeroProducts = allXeroProducts.body.items?.filter(
+  const allXeroProducts = await xeroClient.accountingApi.getItems('', new Date()) // Empty xeroTenantId for custom connection
+  if (!allXeroProducts) {
+    console.error('❌ No products returned from Xero')
+    return
+  }
+  if (!allXeroProducts.body.items?.length) {
+    console.warn('⚠️ No products updated in Xero since last sync')
+    return
+  }
+  console.log(`⬇️ Fetched ${allXeroProducts.body.items.length} products from Xero`)
+  const filteredXeroProducts = allXeroProducts.body.items.filter(
     (product) => product.isTrackedAsInventory && product.isSold,
   )
-  if (!filteredXeroProducts || !filteredXeroProducts.length) {
-    console.error('❌ No products to sync from Xero')
+  if (!filteredXeroProducts.length) {
+    console.warn('⚠️ No valid products updated in Xero since last sync')
     return
   }
   console.log(`⚙️ Filtered ${filteredXeroProducts.length} products to be synced with Sanity`)
@@ -55,6 +63,10 @@ const run = async () => {
   )
   console.log(`⬇️ Fetched ${draftProducts.length} draft products from Sanity`)
 
+  let publishedProductsUpdated = 0
+  let draftProductsUpdated = 0
+  let draftProductsCreated = 0
+
   for (const product of filteredXeroProducts) {
     if (!product.itemID) {
       console.error(`❌ Missing product ID: [${product.code} ${product.name}]`)
@@ -76,6 +88,7 @@ const run = async () => {
             code: product.code,
           })
           .commit()
+        publishedProductsUpdated++
         console.log(`✅ Updated published product [${document.code} ${document.name}]`)
       } else if (draftProduct) {
         document = await sanityClient
@@ -87,6 +100,7 @@ const run = async () => {
             code: product.code,
           })
           .commit()
+        draftProductsUpdated++
         console.log(`✅ Updated draft product [${document.code} ${document.name}]`)
       } else {
         document = await sanityClient.createIfNotExists({
@@ -97,12 +111,17 @@ const run = async () => {
           stock: product.quantityOnHand ?? 0,
           code: product.code,
         })
+        draftProductsCreated++
         console.log(`✅ Created draft product [${document.code} ${document.name}]`)
       }
     } catch (error) {
       console.error(`❌ Failed to process product [${product.code} ${product.name}]`, error)
     }
   }
+
+  console.log(`✅ Updated ${publishedProductsUpdated} published products in Sanity`)
+  console.log(`✅ Updated ${draftProductsUpdated} draft products in Sanity`)
+  console.log(`✅ Created ${draftProductsCreated} draft products in Sanity`)
 }
 
 run()
