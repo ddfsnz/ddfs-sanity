@@ -76,8 +76,14 @@ const run = async () => {
   })
   await xeroClient.getClientCredentialsToken()
 
-  const xeroProducts = await xeroClient.accountingApi.getItems('')
-  console.log('xeroProducts:', xeroProducts.body.items?.length)
+  const allXeroProducts = await xeroClient.accountingApi.getItems('')
+  console.log(`⬇️ Fetched ${allXeroProducts.body.items?.length} products from Xero`)
+  const filteredXeroProducts = allXeroProducts.body.items?.filter(
+    (product) => product.isTrackedAsInventory && product.isSold,
+  )
+  console.log(`⚙️ Filtered ${filteredXeroProducts?.length} products to be synced with Sanity`)
+  console.log(`⚙️ Filtered products:`)
+  filteredXeroProducts?.forEach((product) => console.log(product.name))
 
   const sanityProjectId = getEnvVar('SANITY_PROJECT_ID')
   const sanityApiToken = getEnvVar('SANITY_API_TOKEN')
@@ -118,7 +124,7 @@ const run = async () => {
             code: product.Code,
           })
           .commit()
-        console.log(`✅ Updated published product [${document.name}]`)
+        console.log(`✅ Updated published product [${document.code} ${document.name}]`)
       } else if (draftProduct) {
         document = await sanityClient
           .patch(`drafts.${product.ItemID}`)
@@ -129,7 +135,7 @@ const run = async () => {
             code: product.Code,
           })
           .commit()
-        console.log(`✅ Updated draft product [${document.name}]`)
+        console.log(`✅ Updated draft product [${document.code} ${document.name}]`)
       } else {
         document = await sanityClient.createIfNotExists({
           _id: `drafts.${product.ItemID}`,
@@ -139,11 +145,11 @@ const run = async () => {
           stock: product.QuantityOnHand,
           code: product.Code,
         })
-        console.log(`✅ Created draft product [${document.name}]`)
+        console.log(`✅ Created draft product [${document.code} ${document.name}]`)
       }
     } catch (error) {
       console.error(
-        `❌ Failed to process product [${product.Name}] (ID: ${product.ItemID}):`,
+        `❌ Failed to process product [${product.Name}] (Code: ${product.Code}):`,
         error,
       )
     }
