@@ -9,63 +9,6 @@ function getEnvVar(name: string) {
   return value
 }
 
-const mockXeroData = {
-  Id: '2ae8312e-f165-4dc8-9cfb-1ae11974dc59',
-  Status: 'OK',
-  ProviderName: 'DDFS Test',
-  DateTimeUTC: '/Date(1748255698810)/',
-  Items: [
-    {
-      ItemID: '1f437fdb-393a-4393-903d-e86b9ac1fca6',
-      Code: '000001',
-      Description: 'D & G Intenso Pour Homme EDP 125ml',
-      PurchaseDescription: 'D & G Intenso Pour Homme EDP 125ml',
-      UpdatedDateUTC: '/Date(1724383264737+0000)/',
-      PurchaseDetails: {
-        UnitPrice: 53.92,
-        COGSAccountCode: '310',
-        TaxType: 'INPUT2',
-      },
-      SalesDetails: {
-        UnitPrice: 70.0,
-        AccountCode: '200',
-        TaxType: 'OUTPUT2',
-      },
-      Name: 'D & G Intenso Pour Homme EDP 125ml',
-      IsTrackedAsInventory: true,
-      InventoryAssetAccountCode: '630',
-      TotalCostPool: 0.0,
-      QuantityOnHand: 0.0,
-      IsSold: true,
-      IsPurchased: true,
-    },
-    {
-      ItemID: '53b0ea2c-a913-42b1-a892-4a73343da9f9',
-      Code: '000002',
-      Description: 'Calvin Klein Eternity EDP For Him 100ml',
-      PurchaseDescription: 'Calvin Klein Eternity EDP For Him 100ml',
-      UpdatedDateUTC: '/Date(1724383341867+0000)/',
-      PurchaseDetails: {
-        UnitPrice: 32.75,
-        COGSAccountCode: '310',
-        TaxType: 'INPUT2',
-      },
-      SalesDetails: {
-        UnitPrice: 48.0,
-        AccountCode: '200',
-        TaxType: 'OUTPUT2',
-      },
-      Name: 'Calvin Klein Eternity EDP For Him 100ml',
-      IsTrackedAsInventory: true,
-      InventoryAssetAccountCode: '630',
-      TotalCostPool: 0.0,
-      QuantityOnHand: 0.0,
-      IsSold: true,
-      IsPurchased: true,
-    },
-  ],
-}
-
 const run = async () => {
   const xeroClientId = getEnvVar('XERO_CLIENT_ID')
   const xeroClientSecret = getEnvVar('XERO_CLIENT_SECRET')
@@ -81,9 +24,13 @@ const run = async () => {
   const filteredXeroProducts = allXeroProducts.body.items?.filter(
     (product) => product.isTrackedAsInventory && product.isSold,
   )
-  console.log(`⚙️ Filtered ${filteredXeroProducts?.length} products to be synced with Sanity`)
-  console.log(`⚙️ Filtered products:`)
-  filteredXeroProducts?.forEach((product) => console.log(product.name))
+  if (!filteredXeroProducts || !filteredXeroProducts.length) {
+    console.error('❌ No products to sync from Xero')
+    return
+  }
+  console.log(`⚙️ Filtered ${filteredXeroProducts.length} products to be synced with Sanity`)
+  console.log(`⬆️ Products to sync:`)
+  filteredXeroProducts.forEach((product) => console.log(product.name))
 
   const sanityProjectId = getEnvVar('SANITY_PROJECT_ID')
   const sanityApiToken = getEnvVar('SANITY_API_TOKEN')
@@ -97,61 +44,63 @@ const run = async () => {
 
   const publishedProducts = await sanityClient.fetch<{_id: string}[]>(
     `*[_type == "product" && _id in $ids]`,
-    {ids: mockXeroData.Items.map((product) => product.ItemID)},
+    {ids: filteredXeroProducts.map((product) => product.itemID)},
   )
   console.log(`⬇️ Fetched ${publishedProducts.length} published products from Sanity`)
 
   const draftProducts = await sanityClient.fetch<{_id: string}[]>(
     `*[_type == "product" && _id in $ids]`,
-    {ids: mockXeroData.Items.map((product) => product.ItemID)},
+    {ids: filteredXeroProducts.map((product) => product.itemID)},
     {perspective: 'drafts'},
   )
   console.log(`⬇️ Fetched ${draftProducts.length} draft products from Sanity`)
 
-  for (const product of mockXeroData.Items) {
+  for (const product of filteredXeroProducts) {
+    if (!product.itemID) {
+      console.error(`❌ Missing product ID: [${product.code} ${product.name}]`)
+      return
+    }
+
     try {
-      const publishedProduct = publishedProducts.find((entry) => entry._id === product.ItemID)
-      const draftProduct = draftProducts.find((entry) => entry._id === product.ItemID)
+      const publishedProduct = publishedProducts.find((entry) => entry._id === product.itemID)
+      const draftProduct = draftProducts.find((entry) => entry._id === product.itemID)
 
       let document
       if (publishedProduct) {
         document = await sanityClient
-          .patch(product.ItemID)
+          .patch(product.itemID)
           .set({
-            name: product.Name,
-            price: product.SalesDetails.UnitPrice,
-            stock: product.QuantityOnHand,
-            code: product.Code,
+            name: product.name,
+            price: product.salesDetails?.unitPrice ?? 0,
+            stock: product.quantityOnHand ?? 0,
+            code: product.code,
           })
           .commit()
         console.log(`✅ Updated published product [${document.code} ${document.name}]`)
       } else if (draftProduct) {
         document = await sanityClient
-          .patch(`drafts.${product.ItemID}`)
+          .patch(`drafts.${product.itemID}`)
           .set({
-            name: product.Name,
-            price: product.SalesDetails.UnitPrice,
-            stock: product.QuantityOnHand,
-            code: product.Code,
+            name: product.name,
+            price: product.salesDetails?.unitPrice ?? 0,
+            stock: product.quantityOnHand ?? 0,
+            code: product.code,
           })
           .commit()
         console.log(`✅ Updated draft product [${document.code} ${document.name}]`)
       } else {
         document = await sanityClient.createIfNotExists({
-          _id: `drafts.${product.ItemID}`,
+          _id: `drafts.${product.itemID}`,
           _type: 'product',
-          name: product.Name,
-          price: product.SalesDetails.UnitPrice,
-          stock: product.QuantityOnHand,
-          code: product.Code,
+          name: product.name,
+          price: product.salesDetails?.unitPrice ?? 0,
+          stock: product.quantityOnHand ?? 0,
+          code: product.code,
         })
         console.log(`✅ Created draft product [${document.code} ${document.name}]`)
       }
     } catch (error) {
-      console.error(
-        `❌ Failed to process product [${product.Name}] (Code: ${product.Code}):`,
-        error,
-      )
+      console.error(`❌ Failed to process product [${product.code} ${product.name}]`, error)
     }
   }
 }
