@@ -18,9 +18,6 @@ jobs:
       - name: Get Last Run Timestamp
         id: last-run
         run: |
-          # Use 24 hours ago as fallback if no previous run found
-          TWENTY_FOUR_HOURS_AGO=$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)
-
           RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/actions/runs?status=completed&per_page=3")
 
@@ -31,7 +28,8 @@ jobs:
             | head -n 1)
           echo "Last run timestamp from workflow: $LAST_RUN"
 
-          # Use 24 hours ago if no previous run found
+          # Use 24 hours ago as fallback if no previous run found
+          TWENTY_FOUR_HOURS_AGO=$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)
           if [ -z "$LAST_RUN" ] || [ "$LAST_RUN" = "null" ]; then
             LAST_RUN="$TWENTY_FOUR_HOURS_AGO"
           fi
