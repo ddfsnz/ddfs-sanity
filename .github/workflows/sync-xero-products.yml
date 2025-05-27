@@ -22,6 +22,7 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/actions/runs?status=completed&per_page=3")
 
           # Try to get the last completed run
+          echo "Response: $RESPONSE"
           LAST_RUN=$(echo "$RESPONSE" | jq -r --arg current_run "${{ github.run_id }}" \
             'if .workflow_runs then (.workflow_runs[] | select(.id != ($current_run | tonumber)) | .updated_at) else empty end' \
             | head -n 1)
