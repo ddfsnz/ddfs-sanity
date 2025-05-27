@@ -74,8 +74,8 @@ const run = async () => {
     clientSecret: xeroClientSecret,
     grantType: 'client_credentials',
   })
-  // const tokenSet = await xeroClient.getClientCredentialsToken()
-  // console.log('tokenSet:', tokenSet)
+  const tokenSet = await xeroClient.getClientCredentialsToken()
+  console.log('tokenSet:', tokenSet)
 
   const xeroProducts = await xeroClient.accountingApi.getItems('')
   console.log('xeroProducts:', xeroProducts.body)
