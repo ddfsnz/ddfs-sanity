@@ -11,6 +11,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@sanity/client": "^7.3.0"
+    "@sanity/client": "^7.3.0",
+    "xero-node": "^11.1.0"
   }
 }
