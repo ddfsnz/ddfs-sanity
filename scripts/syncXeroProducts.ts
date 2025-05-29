@@ -40,8 +40,8 @@ const run = async () => {
   if (!filteredXeroProducts.length) {
     throw new Error('❌ No valid products updated in Xero since last sync')
   }
-  console.log(`⚙️ Filtered ${filteredXeroProducts.length} products to be synced:`)
-  filteredXeroProducts.forEach((product) => console.log(`- ${product.code} ${product.name}`))
+  console.log(`⚙️ Filtered ${filteredXeroProducts.length} products to be synced`)
+  // filteredXeroProducts.forEach((product) => console.log(`- ${product.code} ${product.name}`))
 
   const sanityProjectId = getEnvVar('SANITY_PROJECT_ID')
   const sanityApiToken = getEnvVar('SANITY_API_TOKEN')
