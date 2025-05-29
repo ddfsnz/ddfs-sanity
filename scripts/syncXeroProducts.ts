@@ -1,12 +1,22 @@
 import {createClient} from '@sanity/client'
-import {XeroClient} from 'xero-node'
+import {Item, XeroClient} from 'xero-node'
+import {SanityProduct} from './types'
 
-function getEnvVar(name: string) {
+const getEnvVar = (name: string) => {
   const value = process.env[name]
   if (!value) {
-    throw new Error(`Required environment variable ${name} is not set`)
+    throw new Error(`❌ Required environment variable ${name} is not set`)
   }
   return value
+}
+
+const hasChanges = (xeroProduct: Item, sanityProduct: SanityProduct) => {
+  return (
+    xeroProduct.name !== sanityProduct.name ||
+    (xeroProduct.salesDetails?.unitPrice ?? 0) !== sanityProduct.price ||
+    xeroProduct.quantityOnHand !== sanityProduct.stock ||
+    xeroProduct.code !== sanityProduct.code
+  )
 }
 
 const run = async () => {
@@ -19,28 +29,19 @@ const run = async () => {
   })
   await xeroClient.getClientCredentialsToken()
 
-  const lastRunTimestamp = getEnvVar('LAST_RUN_TIMESTAMP')
-  console.log(`⬇️ Fetching products updated in Xero since last run: ${lastRunTimestamp}`)
-  const allXeroProducts = await xeroClient.accountingApi.getItems('', new Date(lastRunTimestamp)) // Empty xeroTenantId for custom connection
-  if (!allXeroProducts) {
-    console.error('❌ No products returned from Xero')
-    return
-  }
-  if (!allXeroProducts.body.items?.length) {
-    console.warn('⚠️ No products updated in Xero since last sync')
-    return
+  const allXeroProducts = await xeroClient.accountingApi.getItems('') // Empty xeroTenantId for custom connection
+  if (!allXeroProducts || !allXeroProducts.body.items?.length) {
+    throw new Error('❌ No products returned from Xero')
   }
   console.log(`⬇️ Fetched ${allXeroProducts.body.items.length} products from Xero`)
   const filteredXeroProducts = allXeroProducts.body.items.filter(
     (product) => product.isTrackedAsInventory && product.isSold,
   )
   if (!filteredXeroProducts.length) {
-    console.warn('⚠️ No valid products updated in Xero since last sync')
-    return
+    throw new Error('❌ No valid products updated in Xero since last sync')
   }
-  console.log(`⚙️ Filtered ${filteredXeroProducts.length} products to be synced with Sanity`)
-  console.log(`⬆️ Products to sync:`)
-  filteredXeroProducts.forEach((product) => console.log(product.name))
+  console.log(`⚙️ Filtered ${filteredXeroProducts.length} products to be synced:`)
+  filteredXeroProducts.forEach((product) => console.log(`- ${product.code} ${product.name}`))
 
   const sanityProjectId = getEnvVar('SANITY_PROJECT_ID')
   const sanityApiToken = getEnvVar('SANITY_API_TOKEN')
@@ -52,13 +53,13 @@ const run = async () => {
     apiVersion: '2025-05-01',
   })
 
-  const publishedProducts = await sanityClient.fetch<{_id: string}[]>(
+  const publishedProducts = await sanityClient.fetch<SanityProduct[]>(
     `*[_type == "product" && _id in $ids]`,
     {ids: filteredXeroProducts.map((product) => product.itemID)},
   )
   console.log(`⬇️ Fetched ${publishedProducts.length} published products from Sanity`)
 
-  const draftProducts = await sanityClient.fetch<{_id: string}[]>(
+  const draftProducts = await sanityClient.fetch<SanityProduct[]>(
     `*[_type == "product" && _id in $ids]`,
     {ids: filteredXeroProducts.map((product) => product.itemID)},
     {perspective: 'drafts'},
@@ -69,55 +70,63 @@ const run = async () => {
   let draftProductsUpdated = 0
   let draftProductsCreated = 0
 
-  for (const product of filteredXeroProducts) {
-    if (!product.itemID) {
-      console.error(`❌ Missing product ID: [${product.code} ${product.name}]`)
+  for (const xeroProduct of filteredXeroProducts) {
+    if (!xeroProduct.itemID) {
+      console.error(`❌ Missing product ID: [${xeroProduct.code} ${xeroProduct.name}]`)
       return
     }
 
     try {
-      const publishedProduct = publishedProducts.find((entry) => entry._id === product.itemID)
-      const draftProduct = draftProducts.find((entry) => entry._id === product.itemID)
+      const publishedProduct = publishedProducts.find(
+        (sanityProduct) => sanityProduct._id === xeroProduct.itemID,
+      )
+      const draftProduct = draftProducts.find(
+        (sanityProduct) => sanityProduct._id === xeroProduct.itemID,
+      )
 
       let document
       if (publishedProduct) {
-        document = await sanityClient
-          .patch(product.itemID)
-          .set({
-            name: product.name,
-            price: product.salesDetails?.unitPrice ?? 0,
-            stock: product.quantityOnHand ?? 0,
-            code: product.code,
-          })
-          .commit()
-        publishedProductsUpdated++
-        console.log(`✅ Updated published product [${document.code} ${document.name}]`)
+        if (hasChanges(xeroProduct, publishedProduct)) {
+          document = await sanityClient
+            .patch(xeroProduct.itemID)
+            .set({
+              name: xeroProduct.name,
+              price: xeroProduct.salesDetails?.unitPrice ?? 0,
+              stock: xeroProduct.quantityOnHand ?? 0,
+              code: xeroProduct.code,
+            })
+            .commit()
+          publishedProductsUpdated++
+          console.log(`✅ Updated published product [${document.code} ${document.name}]`)
+        }
       } else if (draftProduct) {
-        document = await sanityClient
-          .patch(`drafts.${product.itemID}`)
-          .set({
-            name: product.name,
-            price: product.salesDetails?.unitPrice ?? 0,
-            stock: product.quantityOnHand ?? 0,
-            code: product.code,
-          })
-          .commit()
-        draftProductsUpdated++
-        console.log(`✅ Updated draft product [${document.code} ${document.name}]`)
+        if (hasChanges(xeroProduct, draftProduct)) {
+          document = await sanityClient
+            .patch(`drafts.${xeroProduct.itemID}`)
+            .set({
+              name: xeroProduct.name,
+              price: xeroProduct.salesDetails?.unitPrice ?? 0,
+              stock: xeroProduct.quantityOnHand ?? 0,
+              code: xeroProduct.code,
+            })
+            .commit()
+          draftProductsUpdated++
+          console.log(`✅ Updated draft product [${document.code} ${document.name}]`)
+        }
       } else {
         document = await sanityClient.createIfNotExists({
-          _id: `drafts.${product.itemID}`,
+          _id: `drafts.${xeroProduct.itemID}`,
           _type: 'product',
-          name: product.name,
-          price: product.salesDetails?.unitPrice ?? 0,
-          stock: product.quantityOnHand ?? 0,
-          code: product.code,
+          name: xeroProduct.name,
+          price: xeroProduct.salesDetails?.unitPrice ?? 0,
+          stock: xeroProduct.quantityOnHand ?? 0,
+          code: xeroProduct.code,
         })
         draftProductsCreated++
         console.log(`✅ Created draft product [${document.code} ${document.name}]`)
       }
     } catch (error) {
-      console.error(`❌ Failed to process product [${product.code} ${product.name}]`, error)
+      console.error(`❌ Failed to process product [${xeroProduct.code} ${xeroProduct.name}]`, error)
     }
   }
 

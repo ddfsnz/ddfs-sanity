@@ -14,26 +14,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Get Last Run Timestamp
-        id: last-run
-        run: |
-          RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/runs?status=completed&per_page=3")
-
-          # Try to get the last completed run
-          LAST_RUN=$(echo "$RESPONSE" | jq -r --arg current_run "${{ github.run_id }}" \
-            'if .workflow_runs then (.workflow_runs[] | select(.id != ($current_run | tonumber)) | .updated_at) else empty end' \
-            | head -n 1)
-          echo "Last run timestamp from workflow: $LAST_RUN"
-
-          # Use 24 hours ago as fallback if no previous run found
-          TWENTY_FOUR_HOURS_AGO=$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)
-          if [ -z "$LAST_RUN" ] || [ "$LAST_RUN" = "null" ]; then
-            LAST_RUN="$TWENTY_FOUR_HOURS_AGO"
-          fi
-
-          echo "Last run timestamp: $LAST_RUN"
-          echo "timestamp=$LAST_RUN" >> $GITHUB_OUTPUT
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -50,5 +30,4 @@ jobs:
           XERO_CLIENT_SECRET: ${{ secrets.XERO_CLIENT_SECRET }}
           SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
           SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
-          LAST_RUN_TIMESTAMP: ${{ steps.last-run.outputs.timestamp }}
         run: node scripts/build/syncXeroProducts.js
