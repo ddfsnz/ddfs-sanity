@@ -98,7 +98,7 @@ const run = async () => {
             .commit()
           publishedProductsUpdated++
           console.log(
-            `✅ Updated published product [${document.code} | ${document.name} | ${publishedProduct.stock}->${document.stock} | $${publishedProduct.price}->${document.price}]`,
+            `✅ Updated published product [${document.code} | ${document.name} | ${publishedProduct.stock}->${document.stock} | $${publishedProduct.price}->$${document.price}]`,
           )
         }
       } else if (draftProduct) {
@@ -114,7 +114,7 @@ const run = async () => {
             .commit()
           draftProductsUpdated++
           console.log(
-            `✅ Updated draft product [${document.code} | ${document.name} | ${draftProduct.stock}->${document.stock} | $${draftProduct.price}->${document.price}]`,
+            `✅ Updated draft product [${document.code} | ${document.name} | ${draftProduct.stock}->${document.stock} | $${draftProduct.price}->$${document.price}]`,
           )
         }
       } else {
