@@ -6,6 +6,13 @@ export const productType = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{type: 'category'}],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'images',
       title: 'Images',
       type: 'array',
