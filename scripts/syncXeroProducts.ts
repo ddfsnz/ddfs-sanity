@@ -65,6 +65,7 @@ const run = async () => {
     {perspective: 'drafts'},
   )
   console.log(`⬇️ Fetched ${draftProducts.length} draft products from Sanity`)
+  console.log(`————————————————————`)
 
   let publishedProductsUpdated = 0
   let draftProductsUpdated = 0
@@ -84,51 +85,43 @@ const run = async () => {
         (sanityProduct) => sanityProduct._id === xeroProduct.itemID,
       )
 
+      const xeroProductDetails = {
+        name: xeroProduct.name,
+        price: xeroProduct.salesDetails?.unitPrice ?? 0,
+        stock: xeroProduct.quantityOnHand ?? 0,
+        code: xeroProduct.code,
+      }
+
       let document: SanityProduct
       if (publishedProduct) {
         if (hasChanges(xeroProduct, publishedProduct)) {
-          document = await sanityClient
-            .patch(xeroProduct.itemID)
-            .set({
-              name: xeroProduct.name,
-              price: xeroProduct.salesDetails?.unitPrice ?? 0,
-              stock: xeroProduct.quantityOnHand ?? 0,
-              code: xeroProduct.code,
-            })
-            .commit()
+          document = await sanityClient.patch(xeroProduct.itemID).set(xeroProductDetails).commit()
           publishedProductsUpdated++
           console.log(
-            `✅ Updated published product [${document.code} | ${document.name} | ${publishedProduct.stock}->${document.stock} | $${publishedProduct.price}->$${document.price}]`,
+            `✅ Updated published product [${document.code} | Stock: ${publishedProduct.stock} ▶ ${document.stock} | Price: $${publishedProduct.price} ▶ $${document.price} | ${document.name}]`,
           )
         }
       } else if (draftProduct) {
         if (hasChanges(xeroProduct, draftProduct)) {
           document = await sanityClient
             .patch(`drafts.${xeroProduct.itemID}`)
-            .set({
-              name: xeroProduct.name,
-              price: xeroProduct.salesDetails?.unitPrice ?? 0,
-              stock: xeroProduct.quantityOnHand ?? 0,
-              code: xeroProduct.code,
-            })
+            .set(xeroProductDetails)
             .commit()
           draftProductsUpdated++
           console.log(
-            `✅ Updated draft product [${document.code} | ${document.name} | ${draftProduct.stock}->${document.stock} | $${draftProduct.price}->$${document.price}]`,
+            `✅ Updated draft product [${document.code} | Stock: ${draftProduct.stock} ▶ ${document.stock} | Price: $${draftProduct.price} ▶ $${document.price} | ${document.name}]`,
           )
         }
       } else {
         document = await sanityClient.createIfNotExists({
           _id: `drafts.${xeroProduct.itemID}`,
           _type: 'product',
-          name: xeroProduct.name ?? 'Unknown Product',
-          price: xeroProduct.salesDetails?.unitPrice ?? 0,
-          stock: xeroProduct.quantityOnHand ?? 0,
-          code: xeroProduct.code,
+          ...xeroProductDetails,
+          name: xeroProductDetails.name ?? 'Unknown Product',
         })
         draftProductsCreated++
         console.log(
-          `✅ Created draft product [${document.code} | ${document.name} | ${document.stock} | $${document.price}]`,
+          `✅ Created draft product [${document.code} | Stock: ${document.stock} | Price: $${document.price} | ${document.name}]`,
         )
       }
     } catch (error) {
@@ -139,6 +132,7 @@ const run = async () => {
     }
   }
 
+  console.log(`————————————————————`)
   console.log(`✅ Updated ${publishedProductsUpdated} published products in Sanity`)
   console.log(`✅ Updated ${draftProductsUpdated} draft products in Sanity`)
   console.log(`✅ Created ${draftProductsCreated} draft products in Sanity`)
