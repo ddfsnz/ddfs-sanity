@@ -62,7 +62,29 @@ export const productType = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'array',
+      of: [
+        {
+          type: 'block',
+          styles: [
+            {
+              title: 'Heading 1',
+              value: 'h3',
+            },
+            {
+              title: 'Heading 2',
+              value: 'h4',
+            },
+            {
+              title: 'Heading 3',
+              value: 'h5',
+            },
+          ],
+        },
+        {
+          type: 'image',
+        },
+      ],
     }),
     defineField({
       name: 'name',
