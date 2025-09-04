@@ -5,6 +5,7 @@ import {schemaTypes} from './schemaTypes/_index'
 import {Logo} from './components/Logo'
 import {
   BEERS_CATEGORY_ID,
+  CIDERS_CATEGORY_ID,
   WINES_CATEGORY_ID,
   SPIRITS_CATEGORY_ID,
   LIQUERS_CATEGORY_ID,
@@ -50,6 +51,18 @@ export default defineConfig({
                       categoryId: BEERS_CATEGORY_ID,
                     }),
                   ]),
+              ),
+
+            S.divider(),
+
+            S.listItem()
+              .title('Ciders')
+              .icon(() => '🍏')
+              .child(
+                S.documentTypeList('product')
+                  .title('Ciders')
+                  .filter(`_type == "product" && category._ref == "${CIDERS_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
 
             S.divider(),
@@ -114,20 +127,6 @@ export default defineConfig({
                   .title('Liquers')
                   .filter(`_type == "product" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
-              ),
-            S.listItem()
-              .title('Liquer Styles')
-              .icon(() => null)
-              .child(
-                S.documentTypeList('tag')
-                  .title('Liquer Styles')
-                  .filter(`_type == "tag" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
-                  .defaultOrdering([{field: 'name', direction: 'asc'}])
-                  .initialValueTemplates([
-                    S.initialValueTemplateItem('style-template', {
-                      categoryId: LIQUERS_CATEGORY_ID,
-                    }),
-                  ]),
               ),
 
             S.divider(),

@@ -1,4 +1,5 @@
 export const BEERS_CATEGORY_ID = '1ba1526c-f516-4c61-bea8-dda1e2c5fcc0'
+export const CIDERS_CATEGORY_ID = 'fa4fcd60-f6b2-46fc-b93f-38c714a74d7d'
 export const WINES_CATEGORY_ID = '6e00044c-9bd3-4714-83d8-0ef3dfb3f445'
 export const SPIRITS_CATEGORY_ID = 'ec175758-a8ad-4ace-a2ba-d1b176cefe15'
 export const LIQUERS_CATEGORY_ID = '73d69b11-ea27-4760-98da-d15894846031'
