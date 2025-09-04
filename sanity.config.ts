@@ -26,7 +26,8 @@ export default defineConfig({
         S.list()
           .title('Website Content')
           .items([
-            S.divider().title('Products'),
+            S.divider().title('Product Categories'),
+
             S.listItem()
               .title('Beers')
               .icon(() => '🍺')
@@ -37,6 +38,23 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
+              .title('Beer Styles')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('tag')
+                  .title('Beer Styles')
+                  .filter(`_type == "tag" && category._ref == "${BEERS_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('style-template', {
+                      categoryId: BEERS_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
+
+            S.divider(),
+
+            S.listItem()
               .title('Wines')
               .icon(() => '🥂')
               .child(
@@ -45,6 +63,23 @@ export default defineConfig({
                   .filter(`_type == "product" && category._ref == "${WINES_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
+            S.listItem()
+              .title('Wine Styles')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('tag')
+                  .title('Wine Styles')
+                  .filter(`_type == "tag" && category._ref == "${WINES_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('style-template', {
+                      categoryId: WINES_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
+
+            S.divider(),
+
             S.listItem()
               .title('Spirits')
               .icon(() => '🍸')
@@ -55,6 +90,23 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
+              .title('Spirit Styles')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('tag')
+                  .title('Spirit Styles')
+                  .filter(`_type == "tag" && category._ref == "${SPIRITS_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('style-template', {
+                      categoryId: SPIRITS_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
+
+            S.divider(),
+
+            S.listItem()
               .title('Liquers')
               .icon(() => '🍹')
               .child(
@@ -63,6 +115,23 @@ export default defineConfig({
                   .filter(`_type == "product" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
+            S.listItem()
+              .title('Liquer Styles')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('tag')
+                  .title('Liquer Styles')
+                  .filter(`_type == "tag" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('style-template', {
+                      categoryId: LIQUERS_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
+
+            S.divider(),
+
             S.listItem()
               .title('Port')
               .icon(() => '🍷')
@@ -73,6 +142,23 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
+              .title('Port Styles')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('tag')
+                  .title('Port Styles')
+                  .filter(`_type == "tag" && category._ref == "${PORT_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('style-template', {
+                      categoryId: PORT_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
+
+            S.divider(),
+
+            S.listItem()
               .title('Tobacco')
               .icon(() => '🚬')
               .child(
@@ -82,6 +168,23 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
+              .title('Tobacco Styles')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('tag')
+                  .title('Tobacco Styles')
+                  .filter(`_type == "tag" && category._ref == "${TOBACCO_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('style-template', {
+                      categoryId: TOBACCO_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
+
+            S.divider(),
+
+            S.listItem()
               .title('Manuka Honey')
               .icon(() => '🍯')
               .child(
@@ -90,6 +193,23 @@ export default defineConfig({
                   .filter(`_type == "product" && category._ref == "${HONEY_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
+            S.listItem()
+              .title('Honey Styles')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('tag')
+                  .title('Honey Styles')
+                  .filter(`_type == "tag" && category._ref == "${HONEY_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('style-template', {
+                      categoryId: HONEY_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
+
+            S.divider().title('All Products'),
+
             S.listItem()
               .title('All Products')
               .icon(() => '🛍️')
@@ -118,5 +238,20 @@ export default defineConfig({
   ],
   schema: {
     types: schemaTypes,
+    templates: [
+      {
+        id: 'style-template',
+        title: 'Style Template',
+        schemaType: 'tag',
+        parameters: [{name: 'categoryId', type: 'string'}],
+        value: (params: {categoryId: string}) => ({
+          category: {
+            _type: 'reference',
+            _ref: params.categoryId,
+          },
+          type: 'style',
+        }),
+      },
+    ],
   },
 })

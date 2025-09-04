@@ -1,4 +1,11 @@
-import {defineField, defineType} from 'sanity'
+import {defineField, defineType, SanityDocument} from 'sanity'
+
+interface TagDocument extends SanityDocument {
+  category?: {
+    _ref: string
+    _type: 'reference'
+  }
+}
 
 export const productType = defineType({
   name: 'product',
@@ -11,6 +18,27 @@ export const productType = defineType({
       type: 'reference',
       to: [{type: 'category'}],
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'tag',
+      title: 'Style',
+      type: 'reference',
+      to: [{type: 'tag'}],
+      validation: (rule) => rule.required(),
+      options: {
+        filter: ({document}: {document: TagDocument}) => {
+          if (!document?.category?._ref) {
+            return {
+              filter: 'category._ref == $categoryRef',
+              params: {categoryRef: null},
+            }
+          }
+          return {
+            filter: 'category._ref == $categoryRef',
+            params: {categoryRef: document.category._ref},
+          }
+        },
+      },
     }),
     defineField({
       name: 'images',
