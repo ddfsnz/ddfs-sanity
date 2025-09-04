@@ -41,6 +41,13 @@ export const productType = defineType({
       },
     }),
     defineField({
+      name: 'country',
+      title: 'Country',
+      type: 'reference',
+      to: [{type: 'country'}],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'clearance',
       title: 'On Clearance',
       type: 'boolean',
