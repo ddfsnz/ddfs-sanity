@@ -229,6 +229,15 @@ export default defineConfig({
                   .title('Categories')
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
+            S.listItem()
+              .title('Countries')
+              .icon(() => '🌏')
+              .schemaType('country')
+              .child(
+                S.documentTypeList('country')
+                  .title('Countries')
+                  .defaultOrdering([{field: 'name', direction: 'asc'}]),
+              ),
           ]),
     }),
     visionTool({
