@@ -41,6 +41,12 @@ export const productType = defineType({
       },
     }),
     defineField({
+      name: 'clearance',
+      title: 'On Clearance',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'images',
       title: 'Images',
       type: 'array',
