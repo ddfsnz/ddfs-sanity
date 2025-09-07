@@ -1,5 +1,14 @@
 import {defineField, defineType, SanityDocument} from 'sanity'
+import {
+  BEERS_CATEGORY_ID,
+  CIDERS_CATEGORY_ID,
+  LIQUERS_CATEGORY_ID,
+  PORT_CATEGORY_ID,
+  SPIRITS_CATEGORY_ID,
+  WINES_CATEGORY_ID,
+} from './_constants'
 import {DollarInput} from '../components/DollarInput'
+import {PercentInput} from '../components/PercentInput'
 
 interface TagDocument extends SanityDocument {
   category?: {
@@ -81,6 +90,29 @@ export const productType = defineType({
             params: {categoryRef: document.category._ref},
           }
         },
+      },
+    }),
+    defineField({
+      name: 'abv',
+      title: 'Strength (ABV)',
+      type: 'number',
+      components: {
+        input: PercentInput,
+      },
+      validation: (rule) => rule.required().min(0),
+      hidden: ({document}: {document: TagDocument | undefined}) => {
+        const validCategories = [
+          BEERS_CATEGORY_ID,
+          CIDERS_CATEGORY_ID,
+          WINES_CATEGORY_ID,
+          SPIRITS_CATEGORY_ID,
+          LIQUERS_CATEGORY_ID,
+          PORT_CATEGORY_ID,
+        ]
+        if (document?.category) {
+          return !validCategories.includes(document.category._ref)
+        }
+        return true
       },
     }),
     defineField({
