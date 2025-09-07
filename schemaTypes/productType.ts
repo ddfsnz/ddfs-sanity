@@ -116,6 +116,22 @@ export const productType = defineType({
       },
     }),
     defineField({
+      name: 'container',
+      title: 'Container',
+      type: 'string',
+      options: {
+        list: ['Can', 'Bottle'],
+      },
+      validation: (rule) => rule.required(),
+      hidden: ({document}: {document: TagDocument | undefined}) => {
+        const validCategories = [BEERS_CATEGORY_ID, CIDERS_CATEGORY_ID]
+        if (document?.category) {
+          return !validCategories.includes(document.category._ref)
+        }
+        return true
+      },
+    }),
+    defineField({
       name: 'country',
       title: 'Country',
       type: 'reference',
