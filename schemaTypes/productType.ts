@@ -120,7 +120,7 @@ export const productType = defineType({
       title: 'Container',
       type: 'string',
       options: {
-        list: ['Can', 'Bottle'],
+        list: ['Cans', 'Bottles'],
       },
       validation: (rule) => rule.required(),
       hidden: ({document}: {document: TagDocument | undefined}) => {
