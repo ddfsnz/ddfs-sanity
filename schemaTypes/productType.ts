@@ -1,4 +1,5 @@
 import {defineField, defineType, SanityDocument} from 'sanity'
+import {DollarInput} from '../components/DollarInput'
 
 interface TagDocument extends SanityDocument {
   category?: {
@@ -12,6 +13,48 @@ export const productType = defineType({
   title: 'Products',
   type: 'document',
   fields: [
+    defineField({
+      name: 'price',
+      title: 'Price (excl. GST)',
+      description: 'Updated automatically from Xero',
+      type: 'number',
+      readOnly: true,
+      validation: (rule) => rule.required().min(0),
+      components: {
+        input: DollarInput,
+      },
+    }),
+    defineField({
+      name: 'deal',
+      title: 'Deal',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'enabled',
+          title: 'Enable Deal Price',
+          type: 'boolean',
+        }),
+        defineField({
+          name: 'price',
+          title: 'Deal Price (excl. GST)',
+          description: 'Price (per item) for the deal.',
+          type: 'number',
+          components: {
+            input: DollarInput,
+          },
+          validation: (rule) => rule.min(0),
+          hidden: ({parent}) => parent?.enabled !== true,
+        }),
+        defineField({
+          name: 'quantity',
+          title: 'Deal Quantity',
+          description: 'Number of items required to trigger the deal price.',
+          type: 'number',
+          validation: (rule) => rule.integer().min(1),
+          hidden: ({parent}) => parent?.enabled !== true,
+        }),
+      ],
+    }),
     defineField({
       name: 'category',
       title: 'Category',
@@ -46,12 +89,6 @@ export const productType = defineType({
       type: 'reference',
       to: [{type: 'country'}],
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'clearance',
-      title: 'On Clearance',
-      type: 'boolean',
-      initialValue: false,
     }),
     defineField({
       name: 'images',
@@ -93,14 +130,6 @@ export const productType = defineType({
       type: 'string',
       readOnly: true,
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'price',
-      title: 'Price (excl. GST)',
-      description: 'Updated automatically from Xero',
-      type: 'number',
-      readOnly: true,
-      validation: (rule) => rule.required().min(0),
     }),
     defineField({
       name: 'stock',
