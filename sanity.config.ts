@@ -64,6 +64,20 @@ export default defineConfig({
                   .filter(`_type == "product" && category._ref == "${CIDERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
+            S.listItem()
+              .title('Cider Styles')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('tag')
+                  .title('Cider Styles')
+                  .filter(`_type == "tag" && category._ref == "${CIDERS_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('style-template', {
+                      categoryId: CIDERS_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
 
             S.divider(),
 
@@ -127,6 +141,20 @@ export default defineConfig({
                   .title('Liquers')
                   .filter(`_type == "product" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
+              ),
+            S.listItem()
+              .title('Liquer Styles')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('tag')
+                  .title('Liquer Styles')
+                  .filter(`_type == "tag" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('style-template', {
+                      categoryId: LIQUERS_CATEGORY_ID,
+                    }),
+                  ]),
               ),
 
             S.divider(),
