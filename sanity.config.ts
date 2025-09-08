@@ -52,6 +52,20 @@ export default defineConfig({
                     }),
                   ]),
               ),
+            S.listItem()
+              .title('Beer Producers')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('company')
+                  .title('Beer Producers')
+                  .filter(`_type == "company" && category._ref == "${BEERS_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('company-template', {
+                      categoryId: BEERS_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
 
             S.divider(),
 
@@ -74,6 +88,20 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
                     S.initialValueTemplateItem('style-template', {
+                      categoryId: CIDERS_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
+            S.listItem()
+              .title('Cider Producers')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('company')
+                  .title('Cider Producers')
+                  .filter(`_type == "company" && category._ref == "${CIDERS_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('company-template', {
                       categoryId: CIDERS_CATEGORY_ID,
                     }),
                   ]),
@@ -104,6 +132,20 @@ export default defineConfig({
                     }),
                   ]),
               ),
+            S.listItem()
+              .title('Wine Producers')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('company')
+                  .title('Wine Producers')
+                  .filter(`_type == "company" && category._ref == "${WINES_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('company-template', {
+                      categoryId: WINES_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
 
             S.divider(),
 
@@ -126,6 +168,20 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
                     S.initialValueTemplateItem('style-template', {
+                      categoryId: SPIRITS_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
+            S.listItem()
+              .title('Spirit Producers')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('company')
+                  .title('Spirit Producers')
+                  .filter(`_type == "company" && category._ref == "${SPIRITS_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('company-template', {
                       categoryId: SPIRITS_CATEGORY_ID,
                     }),
                   ]),
@@ -156,6 +212,20 @@ export default defineConfig({
                     }),
                   ]),
               ),
+            S.listItem()
+              .title('Liquer Producers')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('company')
+                  .title('Liquer Producers')
+                  .filter(`_type == "company" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('company-template', {
+                      categoryId: LIQUERS_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
 
             S.divider(),
 
@@ -178,6 +248,20 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
                     S.initialValueTemplateItem('style-template', {
+                      categoryId: PORT_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
+            S.listItem()
+              .title('Port Producers')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('company')
+                  .title('Port Producers')
+                  .filter(`_type == "company" && category._ref == "${PORT_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('company-template', {
                       categoryId: PORT_CATEGORY_ID,
                     }),
                   ]),
@@ -208,6 +292,20 @@ export default defineConfig({
                     }),
                   ]),
               ),
+            S.listItem()
+              .title('Tobacco Producers')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('company')
+                  .title('Tobacco Producers')
+                  .filter(`_type == "company" && category._ref == "${TOBACCO_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('company-template', {
+                      categoryId: TOBACCO_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
 
             S.divider(),
 
@@ -234,6 +332,20 @@ export default defineConfig({
                     }),
                   ]),
               ),
+            S.listItem()
+              .title('Honey Producers')
+              .icon(() => null)
+              .child(
+                S.documentTypeList('company')
+                  .title('Honey Producers')
+                  .filter(`_type == "company" && category._ref == "${HONEY_CATEGORY_ID}"`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}])
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem('company-template', {
+                      categoryId: HONEY_CATEGORY_ID,
+                    }),
+                  ]),
+              ),
 
             S.divider().title('All Products'),
 
@@ -249,12 +361,22 @@ export default defineConfig({
 
             S.divider().title('Categorisation'),
             S.listItem()
-              .title('Categories')
+              .title('Product Categories')
               .icon(() => '⚙️')
               .schemaType('category')
               .child(
                 S.documentTypeList('category')
-                  .title('Categories')
+                  .title('Product Categories')
+                  .defaultOrdering([{field: 'name', direction: 'asc'}]),
+              ),
+            S.listItem()
+              .title('Product Types')
+              .icon(() => '⚙️')
+              .schemaType('tag')
+              .child(
+                S.documentTypeList('tag')
+                  .filter(`_type == "tag" && type == "style"`)
+                  .title('Product Types')
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
@@ -295,6 +417,18 @@ export default defineConfig({
             _ref: params.categoryId,
           },
           type: 'style',
+        }),
+      },
+      {
+        id: 'company-template',
+        title: 'Company Template',
+        schemaType: 'company',
+        parameters: [{name: 'categoryId', type: 'string'}],
+        value: (params: {categoryId: string}) => ({
+          category: {
+            _type: 'reference',
+            _ref: params.categoryId,
+          },
         }),
       },
     ],

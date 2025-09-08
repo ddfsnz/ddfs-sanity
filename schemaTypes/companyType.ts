@@ -18,5 +18,12 @@ export const companyType = defineType({
       to: [{type: 'country'}],
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{type: 'category'}],
+      validation: (rule) => rule.required(),
+    }),
   ],
 })
