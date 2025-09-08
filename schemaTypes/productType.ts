@@ -128,7 +128,6 @@ export const productType = defineType({
       components: {
         input: PercentInput,
       },
-      // validation: (rule) => rule.required().min(0),
       validation: (rule) =>
         rule.custom((value, context: ValidationContext & {document?: ProductDocument}) => {
           const validCategories = [
