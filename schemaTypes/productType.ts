@@ -100,6 +100,28 @@ export const productType = defineType({
       },
     }),
     defineField({
+      name: 'wineType',
+      title: 'Type',
+      type: 'string',
+      options: {
+        list: ['Red', 'White'],
+      },
+      validation: (rule) =>
+        rule.custom((value, context: ValidationContext & {document?: ProductDocument}) => {
+          const categoryRef = context.document?.category?._ref
+          if (categoryRef && categoryRef === WINES_CATEGORY_ID) {
+            return value ? true : 'Wine type is required for this category'
+          }
+          return true
+        }),
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
+        if (document?.category) {
+          return !(document.category._ref === WINES_CATEGORY_ID)
+        }
+        return true
+      },
+    }),
+    defineField({
       name: 'abv',
       title: 'Strength (ABV)',
       type: 'number',
