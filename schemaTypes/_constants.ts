@@ -6,3 +6,5 @@ export const PORT_CATEGORY_ID = '8770527f-e336-43cb-a2b2-3f8dc39baa76'
 export const SPIRITS_CATEGORY_ID = 'ec175758-a8ad-4ace-a2ba-d1b176cefe15'
 export const TOBACCO_CATEGORY_ID = '0fa5237f-94fa-4e1b-ae62-2b47e8e7a6b3'
 export const WINES_CATEGORY_ID = '6e00044c-9bd3-4714-83d8-0ef3dfb3f445'
+
+export const TOBACCO_STYLE_ID = '0faa24ea-b491-4e66-99e9-051599dadb72'

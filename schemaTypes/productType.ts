@@ -1,4 +1,4 @@
-import {defineField, defineType, SanityDocument} from 'sanity'
+import {defineField, defineType, SanityDocument, ValidationContext} from 'sanity'
 import {
   BEERS_CATEGORY_ID,
   CIDERS_CATEGORY_ID,
@@ -6,13 +6,19 @@ import {
   LIQUERS_CATEGORY_ID,
   PORT_CATEGORY_ID,
   SPIRITS_CATEGORY_ID,
+  TOBACCO_CATEGORY_ID,
+  TOBACCO_STYLE_ID,
   WINES_CATEGORY_ID,
 } from './_constants'
 import {DollarInput} from '../components/DollarInput'
 import {PercentInput} from '../components/PercentInput'
 
-interface TagDocument extends SanityDocument {
+interface ProductDocument extends SanityDocument {
   category?: {
+    _ref: string
+    _type: 'reference'
+  }
+  tag?: {
     _ref: string
     _type: 'reference'
   }
@@ -79,7 +85,7 @@ export const productType = defineType({
       to: [{type: 'tag'}],
       validation: (rule) => rule.required(),
       options: {
-        filter: ({document}: {document: TagDocument}) => {
+        filter: ({document}: {document: ProductDocument}) => {
           if (!document?.category?._ref) {
             return {
               filter: 'category._ref == $categoryRef',
@@ -100,8 +106,24 @@ export const productType = defineType({
       components: {
         input: PercentInput,
       },
-      validation: (rule) => rule.required().min(0),
-      hidden: ({document}: {document: TagDocument | undefined}) => {
+      // validation: (rule) => rule.required().min(0),
+      validation: (rule) =>
+        rule.custom((value, context: ValidationContext & {document?: ProductDocument}) => {
+          const validCategories = [
+            BEERS_CATEGORY_ID,
+            CIDERS_CATEGORY_ID,
+            WINES_CATEGORY_ID,
+            SPIRITS_CATEGORY_ID,
+            LIQUERS_CATEGORY_ID,
+            PORT_CATEGORY_ID,
+          ]
+          const categoryRef = context.document?.category?._ref
+          if (categoryRef && validCategories.includes(categoryRef)) {
+            return value! > 0 ? true : 'Strength is required for this category'
+          }
+          return true
+        }),
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
         const validCategories = [
           BEERS_CATEGORY_ID,
           CIDERS_CATEGORY_ID,
@@ -123,8 +145,16 @@ export const productType = defineType({
       options: {
         list: ['Cans', 'Bottles'],
       },
-      validation: (rule) => rule.required(),
-      hidden: ({document}: {document: TagDocument | undefined}) => {
+      validation: (rule) =>
+        rule.custom((value, context: ValidationContext & {document?: ProductDocument}) => {
+          const validCategories = [BEERS_CATEGORY_ID, CIDERS_CATEGORY_ID]
+          const categoryRef = context.document?.category?._ref
+          if (categoryRef && validCategories.includes(categoryRef)) {
+            return value ? true : 'Container is required for this category'
+          }
+          return true
+        }),
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
         const validCategories = [BEERS_CATEGORY_ID, CIDERS_CATEGORY_ID]
         if (document?.category) {
           return !validCategories.includes(document.category._ref)
@@ -136,8 +166,29 @@ export const productType = defineType({
       name: 'size',
       title: 'Size',
       type: 'object',
-      validation: (rule) => rule.required(),
-      hidden: ({document}: {document: TagDocument | undefined}) => {
+      validation: (rule) =>
+        rule.custom((value, context: ValidationContext & {document?: ProductDocument}) => {
+          const validCategories = [
+            BEERS_CATEGORY_ID,
+            CIDERS_CATEGORY_ID,
+            HONEY_CATEGORY_ID,
+            LIQUERS_CATEGORY_ID,
+            PORT_CATEGORY_ID,
+            SPIRITS_CATEGORY_ID,
+            WINES_CATEGORY_ID,
+          ]
+          const categoryRef = context.document?.category?._ref
+          const tagRef = context.document?.tag?._ref
+
+          if (
+            (categoryRef && validCategories.includes(categoryRef)) ||
+            (categoryRef === TOBACCO_CATEGORY_ID && tagRef === TOBACCO_STYLE_ID)
+          ) {
+            return value ? true : 'Size is required for this category/style'
+          }
+          return true
+        }),
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
         const validCategories = [
           BEERS_CATEGORY_ID,
           CIDERS_CATEGORY_ID,
@@ -147,8 +198,14 @@ export const productType = defineType({
           SPIRITS_CATEGORY_ID,
           WINES_CATEGORY_ID,
         ]
-        if (document?.category) {
-          return !validCategories.includes(document.category._ref)
+        const categoryRef = document?.category?._ref
+        const tagRef = document?.tag?._ref
+
+        if (categoryRef) {
+          return !(
+            validCategories.includes(categoryRef) ||
+            (categoryRef === TOBACCO_CATEGORY_ID && tagRef === TOBACCO_STYLE_ID)
+          )
         }
         return true
       },
