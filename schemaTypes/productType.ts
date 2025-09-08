@@ -2,6 +2,7 @@ import {defineField, defineType, SanityDocument} from 'sanity'
 import {
   BEERS_CATEGORY_ID,
   CIDERS_CATEGORY_ID,
+  HONEY_CATEGORY_ID,
   LIQUERS_CATEGORY_ID,
   PORT_CATEGORY_ID,
   SPIRITS_CATEGORY_ID,
@@ -132,11 +133,66 @@ export const productType = defineType({
       },
     }),
     defineField({
-      name: 'country',
-      title: 'Country',
-      type: 'reference',
-      to: [{type: 'country'}],
+      name: 'size',
+      title: 'Size',
+      type: 'object',
       validation: (rule) => rule.required(),
+      hidden: ({document}: {document: TagDocument | undefined}) => {
+        const validCategories = [
+          BEERS_CATEGORY_ID,
+          CIDERS_CATEGORY_ID,
+          HONEY_CATEGORY_ID,
+          LIQUERS_CATEGORY_ID,
+          PORT_CATEGORY_ID,
+          SPIRITS_CATEGORY_ID,
+          WINES_CATEGORY_ID,
+        ]
+        if (document?.category) {
+          return !validCategories.includes(document.category._ref)
+        }
+        return true
+      },
+      fields: [
+        {
+          name: 'value',
+          title: 'Value',
+          type: 'number',
+          validation: (rule) => rule.required().min(1),
+        },
+        {
+          name: 'unit',
+          title: 'Unit',
+          type: 'string',
+          validation: (rule) => rule.required(),
+          options: {
+            list: [
+              {value: 'ml', title: 'mL'},
+              {value: 'g', title: 'g'},
+            ],
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'quantity',
+      title: 'Quantity (items per pack)',
+      description: 'e.g. 6 or 24 pack of beer.',
+      type: 'array',
+      of: [{type: 'number'}],
+    }),
+    defineField({
+      name: 'company',
+      title: 'Company/Producer',
+      type: 'reference',
+      to: [{type: 'company'}],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'quantityOptions',
+      title: 'Default Quantity Options',
+      description: 'Customers can also enter custom quantities.',
+      type: 'array',
+      of: [{type: 'number'}],
     }),
     defineField({
       name: 'images',

@@ -258,6 +258,15 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
+              .title('Companies/Producers')
+              .icon(() => '🏭')
+              .schemaType('company')
+              .child(
+                S.documentTypeList('company')
+                  .title('Companies/Producers')
+                  .defaultOrdering([{field: 'name', direction: 'asc'}]),
+              ),
+            S.listItem()
               .title('Countries')
               .icon(() => '🌏')
               .schemaType('country')
