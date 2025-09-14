@@ -33,8 +33,8 @@ export const wineOptions = defineField({
     defineField({
       name: 'year',
       title: 'Year',
+      description: 'Leave blank for no vintage',
       type: 'number',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'region',
