@@ -2,6 +2,7 @@ import {defineField, defineType, SanityDocument} from 'sanity'
 import {
   BEERS_CATEGORY_ID,
   CIDERS_CATEGORY_ID,
+  LIQUERS_CATEGORY_ID,
   SPIRITS_CATEGORY_ID,
   WINES_CATEGORY_ID,
 } from './_constants'
@@ -11,6 +12,7 @@ import {ciderOptions} from './productOptions/cider'
 import {wineOptions} from './productOptions/wine'
 import {quantityField} from './fields/quantity'
 import {spiritOptions} from './productOptions/spirits'
+import {liquerOptions} from './productOptions/liquers'
 
 export interface ProductDocument extends SanityDocument {
   category?: {
@@ -179,6 +181,13 @@ export const productType = defineType({
       ...spiritOptions,
       hidden: ({document}: {document: ProductDocument | undefined}) => {
         return document?.category?._ref !== SPIRITS_CATEGORY_ID
+      },
+    }),
+    // Liquers Options
+    defineField({
+      ...liquerOptions,
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
+        return document?.category?._ref !== LIQUERS_CATEGORY_ID
       },
     }),
     // defineField({
