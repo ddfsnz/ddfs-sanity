@@ -1,10 +1,16 @@
 import {defineField, defineType, SanityDocument} from 'sanity'
-import {BEERS_CATEGORY_ID, CIDERS_CATEGORY_ID, WINES_CATEGORY_ID} from './_constants'
+import {
+  BEERS_CATEGORY_ID,
+  CIDERS_CATEGORY_ID,
+  SPIRITS_CATEGORY_ID,
+  WINES_CATEGORY_ID,
+} from './_constants'
 import {DollarInput} from '../components/DollarInput'
 import {beerOptions} from './productOptions/beer'
 import {ciderOptions} from './productOptions/cider'
 import {wineOptions} from './productOptions/wine'
 import {quantityField} from './fields/quantity'
+import {spiritOptions} from './productOptions/spirits'
 
 export interface ProductDocument extends SanityDocument {
   category?: {
@@ -104,7 +110,7 @@ export const productType = defineType({
       },
     }),
     defineField({
-      name: 'clearance',
+      name: 'isOnClearance',
       title: 'On Clearance',
       description:
         'Display clearance label on product on website. Not needed if specific deal configured.',
@@ -116,7 +122,7 @@ export const productType = defineType({
       type: 'object',
       fields: [
         defineField({
-          name: 'enabled',
+          name: 'isEnabled',
           title: 'Enable Deal Price',
           type: 'boolean',
           description: 'Configure specific deal for this product.',
@@ -166,6 +172,13 @@ export const productType = defineType({
       ...wineOptions,
       hidden: ({document}: {document: ProductDocument | undefined}) => {
         return document?.category?._ref !== WINES_CATEGORY_ID
+      },
+    }),
+    // Spirits Options
+    defineField({
+      ...spiritOptions,
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
+        return document?.category?._ref !== SPIRITS_CATEGORY_ID
       },
     }),
     // defineField({
