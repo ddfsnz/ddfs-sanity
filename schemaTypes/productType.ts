@@ -5,6 +5,7 @@ import {
   LIQUERS_CATEGORY_ID,
   PORTS_CATEGORY_ID,
   SPIRITS_CATEGORY_ID,
+  TOBACCO_CATEGORY_ID,
   WINES_CATEGORY_ID,
 } from './_constants'
 import {DollarInput} from '../components/DollarInput'
@@ -15,6 +16,7 @@ import {quantityField} from './fields/quantity'
 import {spiritOptions} from './productOptions/spirits'
 import {liquerOptions} from './productOptions/liquers'
 import {portOptions} from './productOptions/port'
+import {tobaccoOptions} from './productOptions/tobacco'
 
 export interface ProductDocument extends SanityDocument {
   category?: {
@@ -155,7 +157,7 @@ export const productType = defineType({
     defineField({
       ...quantityField,
       description:
-        'Default quantity options for selecttion. Customers can also enter custom quantities.',
+        'Default quantity options for selection. Customers can also enter custom quantities.',
     }),
     // Beer Options
     defineField({
@@ -197,6 +199,13 @@ export const productType = defineType({
       ...portOptions,
       hidden: ({document}: {document: ProductDocument | undefined}) => {
         return document?.category?._ref !== PORTS_CATEGORY_ID
+      },
+    }),
+    // Tobacco Options
+    defineField({
+      ...tobaccoOptions,
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
+        return document?.category?._ref !== TOBACCO_CATEGORY_ID
       },
     }),
     // defineField({
