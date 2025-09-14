@@ -3,6 +3,7 @@ import {
   BEERS_CATEGORY_ID,
   CIDERS_CATEGORY_ID,
   LIQUERS_CATEGORY_ID,
+  PORTS_CATEGORY_ID,
   SPIRITS_CATEGORY_ID,
   WINES_CATEGORY_ID,
 } from './_constants'
@@ -13,6 +14,7 @@ import {wineOptions} from './productOptions/wine'
 import {quantityField} from './fields/quantity'
 import {spiritOptions} from './productOptions/spirits'
 import {liquerOptions} from './productOptions/liquers'
+import {portOptions} from './productOptions/port'
 
 export interface ProductDocument extends SanityDocument {
   category?: {
@@ -190,6 +192,13 @@ export const productType = defineType({
         return document?.category?._ref !== LIQUERS_CATEGORY_ID
       },
     }),
+    // Port Options
+    defineField({
+      ...portOptions,
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
+        return document?.category?._ref !== PORTS_CATEGORY_ID
+      },
+    }),
     // defineField({
     //   name: 'tag',
     //   title: 'Style',
@@ -226,7 +235,7 @@ export const productType = defineType({
     //         WINES_CATEGORY_ID,
     //         SPIRITS_CATEGORY_ID,
     //         LIQUERS_CATEGORY_ID,
-    //         PORT_CATEGORY_ID,
+    //         PORTS_CATEGORY_ID,
     //       ]
     //       const categoryRef = context.document?.category?._ref
     //       if (categoryRef && validCategories.includes(categoryRef)) {
@@ -241,7 +250,7 @@ export const productType = defineType({
     //       WINES_CATEGORY_ID,
     //       SPIRITS_CATEGORY_ID,
     //       LIQUERS_CATEGORY_ID,
-    //       PORT_CATEGORY_ID,
+    //       PORTS_CATEGORY_ID,
     //     ]
     //     if (document?.category) {
     //       return !validCategories.includes(document.category._ref)
@@ -260,7 +269,7 @@ export const productType = defineType({
     //         CIDERS_CATEGORY_ID,
     //         HONEY_CATEGORY_ID,
     //         LIQUERS_CATEGORY_ID,
-    //         PORT_CATEGORY_ID,
+    //         PORTS_CATEGORY_ID,
     //         SPIRITS_CATEGORY_ID,
     //         WINES_CATEGORY_ID,
     //       ]
@@ -281,7 +290,7 @@ export const productType = defineType({
     //       CIDERS_CATEGORY_ID,
     //       HONEY_CATEGORY_ID,
     //       LIQUERS_CATEGORY_ID,
-    //       PORT_CATEGORY_ID,
+    //       PORTS_CATEGORY_ID,
     //       SPIRITS_CATEGORY_ID,
     //       WINES_CATEGORY_ID,
     //     ]

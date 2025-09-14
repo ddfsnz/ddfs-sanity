@@ -9,7 +9,7 @@ import {
   WINES_CATEGORY_ID,
   SPIRITS_CATEGORY_ID,
   LIQUERS_CATEGORY_ID,
-  PORT_CATEGORY_ID,
+  PORTS_CATEGORY_ID,
   TOBACCO_CATEGORY_ID,
   HONEY_CATEGORY_ID,
 } from './schemaTypes/_constants'
@@ -235,7 +235,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('product')
                   .title('Port')
-                  .filter(`_type == "product" && category._ref == "${PORT_CATEGORY_ID}"`)
+                  .filter(`_type == "product" && category._ref == "${PORTS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
@@ -244,11 +244,11 @@ export default defineConfig({
               .child(
                 S.documentTypeList('tag')
                   .title('Port Styles')
-                  .filter(`_type == "tag" && category._ref == "${PORT_CATEGORY_ID}"`)
+                  .filter(`_type == "tag" && category._ref == "${PORTS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
                     S.initialValueTemplateItem('style-template', {
-                      categoryId: PORT_CATEGORY_ID,
+                      categoryId: PORTS_CATEGORY_ID,
                     }),
                   ]),
               ),
@@ -258,11 +258,11 @@ export default defineConfig({
               .child(
                 S.documentTypeList('company')
                   .title('Port Producers')
-                  .filter(`_type == "company" && category._ref == "${PORT_CATEGORY_ID}"`)
+                  .filter(`_type == "company" && category._ref == "${PORTS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
                     S.initialValueTemplateItem('company-template', {
-                      categoryId: PORT_CATEGORY_ID,
+                      categoryId: PORTS_CATEGORY_ID,
                     }),
                   ]),
               ),
