@@ -30,5 +30,17 @@ export const wineOptions = defineField({
     styleField,
     abvField,
     sizeField,
+    defineField({
+      name: 'year',
+      title: 'Year',
+      type: 'number',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'region',
+      title: 'Region',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
   ],
 })

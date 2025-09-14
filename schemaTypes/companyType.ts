@@ -19,8 +19,16 @@ export const companyType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'featured',
+      title: 'Featured Producer',
+      description:
+        'Display Featured Producer label and enable filtering for this Producer (e.g. WOTM).',
+      type: 'boolean',
+    }),
+    defineField({
       name: 'category',
       title: 'Category',
+      description: 'Controls which products this Producer is applicable to.',
       type: 'reference',
       to: [{type: 'category'}],
       validation: (rule) => rule.required(),

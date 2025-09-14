@@ -72,6 +72,8 @@ export const productType = defineType({
     defineField({
       name: 'company',
       title: 'Company/Producer',
+      description:
+        'Company/Producer contains country of origin. Wine regions are configured under Product Options.',
       type: 'reference',
       to: [{type: 'company'}],
       validation: (rule) => rule.required(),
