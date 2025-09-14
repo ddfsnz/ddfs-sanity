@@ -25,7 +25,6 @@ export const spiritOptions = defineField({
       name: 'age',
       title: 'Age (Years)',
       type: 'number',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'isExportExclusive',
