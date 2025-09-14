@@ -8,3 +8,5 @@ export const TOBACCO_CATEGORY_ID = '0fa5237f-94fa-4e1b-ae62-2b47e8e7a6b3'
 export const WINES_CATEGORY_ID = '6e00044c-9bd3-4714-83d8-0ef3dfb3f445'
 
 export const TOBACCO_STYLE_ID = '0faa24ea-b491-4e66-99e9-051599dadb72'
+export const HONEY_STYLE_ID = '176a5e87-c3c5-4376-ab6f-afb62693f958'
+export const HONEY_CAPSULES_STYLE_ID = 'f2a27d63-9304-419f-9885-a576704be735'
