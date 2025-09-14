@@ -370,17 +370,17 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
-              .title('Product Types')
+              .title('All Product Styles')
               .icon(() => '⚙️')
               .schemaType('tag')
               .child(
                 S.documentTypeList('tag')
                   .filter(`_type == "tag" && type == "style"`)
-                  .title('Product Types')
+                  .title('Product Styles')
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
-              .title('Companies/Producers')
+              .title('All Companies/Producers')
               .icon(() => '🏭')
               .schemaType('company')
               .child(
