@@ -35,6 +35,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('product')
                   .title('Beers')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${BEERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
@@ -44,6 +45,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('tag')
                   .title('Beer Styles')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "tag" && category._ref == "${BEERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -58,6 +60,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('company')
                   .title('Beer Producers')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "company" && category._ref == "${BEERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -75,6 +78,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('product')
                   .title('Ciders')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${CIDERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
@@ -84,6 +88,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('tag')
                   .title('Cider Styles')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "tag" && category._ref == "${CIDERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -98,6 +103,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('company')
                   .title('Cider Producers')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "company" && category._ref == "${CIDERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -115,6 +121,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('product')
                   .title('Wines')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${WINES_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
@@ -124,6 +131,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('tag')
                   .title('Wine Styles')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "tag" && category._ref == "${WINES_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -138,6 +146,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('company')
                   .title('Wine Producers')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "company" && category._ref == "${WINES_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -155,6 +164,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('product')
                   .title('Spirits')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${SPIRITS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
@@ -164,6 +174,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('tag')
                   .title('Spirit Styles')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "tag" && category._ref == "${SPIRITS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -178,6 +189,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('company')
                   .title('Spirit Producers')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "company" && category._ref == "${SPIRITS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -195,6 +207,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('product')
                   .title('Liquers')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
@@ -204,6 +217,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('tag')
                   .title('Liquer Styles')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "tag" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -218,6 +232,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('company')
                   .title('Liquer Producers')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "company" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -235,6 +250,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('product')
                   .title('Port')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${PORTS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
@@ -244,6 +260,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('tag')
                   .title('Port Styles')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "tag" && category._ref == "${PORTS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -258,6 +275,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('company')
                   .title('Port Producers')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "company" && category._ref == "${PORTS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -275,6 +293,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('product')
                   .title('Tobacco')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${TOBACCO_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
@@ -284,6 +303,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('tag')
                   .title('Tobacco Styles')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "tag" && category._ref == "${TOBACCO_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -298,6 +318,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('company')
                   .title('Tobacco Producers')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "company" && category._ref == "${TOBACCO_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -315,6 +336,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('product')
                   .title('Manuka Honey')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${HONEY_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
@@ -324,6 +346,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('tag')
                   .title('Honey Styles')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "tag" && category._ref == "${HONEY_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -338,6 +361,7 @@ export default defineConfig({
               .child(
                 S.documentTypeList('company')
                   .title('Honey Producers')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "company" && category._ref == "${HONEY_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
@@ -375,6 +399,7 @@ export default defineConfig({
               .schemaType('tag')
               .child(
                 S.documentTypeList('tag')
+                  .apiVersion('v2025-02-19')
                   .filter(`_type == "tag" && type == "style"`)
                   .title('Product Styles')
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
