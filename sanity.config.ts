@@ -382,8 +382,20 @@ export default defineConfig({
                   .title('All Products')
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
+            S.listItem()
+              .title('Uncategorised Products')
+              .icon(() => '🛍️')
+              .schemaType('product')
+              .child(
+                S.documentTypeList('product')
+                  .title('Uncategorised Products')
+                  .apiVersion('v2025-02-19')
+                  .filter(`_type == "product" && (!defined(category) || !defined(category._ref))`)
+                  .defaultOrdering([{field: 'name', direction: 'asc'}]),
+              ),
 
             S.divider().title('Categorisation'),
+
             S.listItem()
               .title('Product Categories')
               .icon(() => '⚙️')
