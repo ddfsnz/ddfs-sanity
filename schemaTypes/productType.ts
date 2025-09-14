@@ -1,4 +1,5 @@
 import {defineField, defineType, SanityDocument} from 'sanity'
+import {DollarInput} from '../components/DollarInput'
 import {
   BEERS_CATEGORY_ID,
   CIDERS_CATEGORY_ID,
@@ -9,16 +10,15 @@ import {
   TOBACCO_CATEGORY_ID,
   WINES_CATEGORY_ID,
 } from './_constants'
-import {DollarInput} from '../components/DollarInput'
+import {quantityField} from './fields/quantity'
 import {beerOptions} from './productOptions/beer'
 import {ciderOptions} from './productOptions/cider'
-import {wineOptions} from './productOptions/wine'
-import {quantityField} from './fields/quantity'
-import {spiritOptions} from './productOptions/spirits'
+import {honeyOptions} from './productOptions/honey'
 import {liquerOptions} from './productOptions/liquers'
 import {portOptions} from './productOptions/port'
+import {spiritOptions} from './productOptions/spirits'
 import {tobaccoOptions} from './productOptions/tobacco'
-import {honeyOptions} from './productOptions/honey'
+import {wineOptions} from './productOptions/wine'
 
 export interface ProductDocument extends SanityDocument {
   category?: {

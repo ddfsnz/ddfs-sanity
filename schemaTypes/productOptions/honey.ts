@@ -1,10 +1,10 @@
 import {defineField, ValidationContext} from 'sanity'
-import {ProductDocument} from '../productType'
 import {HONEY_CAPSULES_STYLE_ID, HONEY_CATEGORY_ID, HONEY_STYLE_ID} from '../_constants'
-import {styleField} from '../fields/style'
-import {sizeField} from '../fields/size'
-import {quantityField} from '../fields/quantity'
+import {ProductDocument} from '../productType'
 import {PlusInput} from '../../components/PlusInput'
+import {quantityField} from '../fields/quantity'
+import {sizeField} from '../fields/size'
+import {styleField} from '../fields/style'
 
 export const honeyOptions = defineField({
   name: 'honeyOptions',

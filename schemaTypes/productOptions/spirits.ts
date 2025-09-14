@@ -1,9 +1,9 @@
 import {defineField, ValidationContext} from 'sanity'
-import {ProductDocument} from '../productType'
 import {SPIRITS_CATEGORY_ID} from '../_constants'
-import {styleField} from '../fields/style'
+import {ProductDocument} from '../productType'
 import {abvField} from '../fields/abv'
 import {sizeField} from '../fields/size'
+import {styleField} from '../fields/style'
 
 export const spiritOptions = defineField({
   name: 'spiritOptions',
