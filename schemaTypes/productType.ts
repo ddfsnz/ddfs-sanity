@@ -1,18 +1,10 @@
-import {defineField, defineType, SanityDocument, ValidationContext} from 'sanity'
-import {
-  BEERS_CATEGORY_ID,
-  CIDERS_CATEGORY_ID,
-  HONEY_CATEGORY_ID,
-  LIQUERS_CATEGORY_ID,
-  PORT_CATEGORY_ID,
-  SPIRITS_CATEGORY_ID,
-  TOBACCO_CATEGORY_ID,
-  TOBACCO_STYLE_ID,
-  WINES_CATEGORY_ID,
-} from './_constants'
+import {defineField, defineType, SanityDocument} from 'sanity'
+import {BEERS_CATEGORY_ID, CIDERS_CATEGORY_ID, WINES_CATEGORY_ID} from './_constants'
 import {DollarInput} from '../components/DollarInput'
-import {PercentInput} from '../components/PercentInput'
-import {beerOptions} from './beerSettings'
+import {beerOptions} from './productOptions/beer'
+import {ciderOptions} from './productOptions/cider'
+import {wineOptions} from './productOptions/wine'
+import {quantityField} from './fields/quantity'
 
 export interface ProductDocument extends SanityDocument {
   category?: {
@@ -101,7 +93,7 @@ export const productType = defineType({
     defineField({
       name: 'price',
       title: 'Price (excl. GST)',
-      description: 'Updated automatically from Xero',
+      description: 'Updated automatically from Xero.',
       type: 'number',
       readOnly: true,
       validation: (rule) => rule.required().min(0),
@@ -149,18 +141,29 @@ export const productType = defineType({
       ],
     }),
     defineField({
-      name: 'defaultQuantityOptions',
-      title: 'Default Quantity Options',
-      description: 'Customers can also enter custom quantities.',
-      type: 'array',
-      of: [{type: 'number'}],
-      validation: (rule) => rule.required(),
+      ...quantityField,
+      description:
+        'Default quantity options for selecttion. Customers can also enter custom quantities.',
     }),
     // Beer Options
     defineField({
       ...beerOptions,
       hidden: ({document}: {document: ProductDocument | undefined}) => {
         return document?.category?._ref !== BEERS_CATEGORY_ID
+      },
+    }),
+    // Cider Options
+    defineField({
+      ...ciderOptions,
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
+        return document?.category?._ref !== CIDERS_CATEGORY_ID
+      },
+    }),
+    // Wine Options
+    defineField({
+      ...wineOptions,
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
+        return document?.category?._ref !== WINES_CATEGORY_ID
       },
     }),
     // defineField({
@@ -298,31 +301,9 @@ export const productType = defineType({
     //   of: [{type: 'number'}],
     // }),
     defineField({
-      name: 'wineType',
-      title: 'Type',
-      type: 'string',
-      options: {
-        list: ['Red', 'White'],
-      },
-      validation: (rule) =>
-        rule.custom((value, context: ValidationContext & {document?: ProductDocument}) => {
-          const categoryRef = context.document?.category?._ref
-          if (categoryRef && categoryRef === WINES_CATEGORY_ID) {
-            return value ? true : 'Wine type is required for this category'
-          }
-          return true
-        }),
-      hidden: ({document}: {document: ProductDocument | undefined}) => {
-        if (document?.category) {
-          return !(document.category._ref === WINES_CATEGORY_ID)
-        }
-        return true
-      },
-    }),
-    defineField({
       name: 'name',
       title: 'Name',
-      description: 'Updated automatically from Xero',
+      description: 'Updated automatically from Xero.',
       type: 'string',
       readOnly: true,
       validation: (rule) => rule.required(),
@@ -330,7 +311,7 @@ export const productType = defineType({
     defineField({
       name: 'stock',
       title: 'Stock',
-      description: 'Updated automatically from Xero',
+      description: 'Updated automatically from Xero.',
       type: 'number',
       readOnly: true,
       validation: (rule) => rule.required().min(0),
@@ -338,7 +319,7 @@ export const productType = defineType({
     defineField({
       name: 'code',
       title: 'Code',
-      description: 'Updated automatically from Xero',
+      description: 'Updated automatically from Xero.',
       type: 'string',
       readOnly: true,
       validation: (rule) => rule.required(),
