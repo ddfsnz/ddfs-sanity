@@ -24,7 +24,7 @@ export const honeyOptions = defineField({
       name: 'mgo',
       title: 'MGO',
       type: 'number',
-      hidden: ({parent}) => parent?.style._ref !== HONEY_STYLE_ID,
+      hidden: ({parent}) => parent?.style?._ref !== HONEY_STYLE_ID,
     }),
     defineField({
       name: 'umf',
@@ -33,7 +33,7 @@ export const honeyOptions = defineField({
       components: {
         input: PlusInput,
       },
-      hidden: ({parent}) => parent?.style._ref !== HONEY_STYLE_ID,
+      hidden: ({parent}) => parent?.style?._ref !== HONEY_STYLE_ID,
     }),
     defineField({
       name: 'range',
@@ -42,7 +42,7 @@ export const honeyOptions = defineField({
       options: {
         list: ['Core', 'Special'],
       },
-      hidden: ({parent}) => parent?.style._ref !== HONEY_STYLE_ID,
+      hidden: ({parent}) => parent?.style?._ref !== HONEY_STYLE_ID,
       validation: (rule) =>
         rule.custom((value, context: ValidationContext) => {
           const parent = context.parent as {style?: {_ref?: string}} | undefined
@@ -55,7 +55,7 @@ export const honeyOptions = defineField({
     }),
     defineField({
       ...sizeField,
-      hidden: ({parent}) => parent?.style._ref === HONEY_CAPSULES_STYLE_ID,
+      hidden: ({parent}) => parent?.style?._ref === HONEY_CAPSULES_STYLE_ID,
       validation: (rule) =>
         rule.custom((value, context: ValidationContext) => {
           const parent = context.parent as {style?: {_ref?: string}} | undefined
@@ -69,7 +69,7 @@ export const honeyOptions = defineField({
     defineField({
       ...quantityField,
       title: 'Container Quantity',
-      hidden: ({parent}) => parent?.style._ref !== HONEY_CAPSULES_STYLE_ID,
+      hidden: ({parent}) => parent?.style?._ref !== HONEY_CAPSULES_STYLE_ID,
       validation: (rule) =>
         rule.custom((value, context: ValidationContext) => {
           const parent = context.parent as {style?: {_ref?: string}} | undefined

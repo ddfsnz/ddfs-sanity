@@ -25,7 +25,7 @@ export const tobaccoOptions = defineField({
       options: {
         list: [20, 25],
       },
-      hidden: ({parent}) => parent?.style._ref === TOBACCO_STYLE_ID,
+      hidden: ({parent}) => parent?.style?._ref === TOBACCO_STYLE_ID,
       validation: (rule) =>
         rule.custom((value, context: ValidationContext) => {
           const parent = context.parent as {style?: {_ref?: string}} | undefined
@@ -38,7 +38,7 @@ export const tobaccoOptions = defineField({
     }),
     defineField({
       ...sizeField,
-      hidden: ({parent}) => parent?.style._ref !== TOBACCO_STYLE_ID,
+      hidden: ({parent}) => parent?.style?._ref !== TOBACCO_STYLE_ID,
       validation: (rule) =>
         rule.custom((value, context: ValidationContext) => {
           const parent = context.parent as {style?: {_ref?: string}} | undefined
