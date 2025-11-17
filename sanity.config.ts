@@ -27,6 +27,15 @@ export default defineConfig({
         S.list()
           .title('Website Content')
           .items([
+            S.divider().title('Page Content'),
+
+            S.listItem()
+              .title('About')
+              .icon(() => '🍷')
+              .child(
+                S.document().title('About DDFS').schemaType('about-ddfs').documentId('about-ddfs'),
+              ),
+
             S.divider().title('Product Categories'),
 
             S.listItem()
