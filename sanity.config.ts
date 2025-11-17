@@ -35,6 +35,15 @@ export default defineConfig({
               .child(
                 S.document().title('About DDFS').schemaType('about-ddfs').documentId('about-ddfs'),
               ),
+            S.listItem()
+              .title('Pages')
+              .icon(() => '📄')
+              .child(
+                S.documentTypeList('page')
+                  .title('Pages')
+                  .apiVersion('v2025-02-19')
+                  .defaultOrdering([{field: 'title', direction: 'asc'}]),
+              ),
 
             S.divider().title('Product Categories'),
 
