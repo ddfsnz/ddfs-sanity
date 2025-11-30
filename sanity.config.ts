@@ -8,7 +8,7 @@ import {
   CIDERS_CATEGORY_ID,
   WINES_CATEGORY_ID,
   SPIRITS_CATEGORY_ID,
-  LIQUERS_CATEGORY_ID,
+  LIQUEURS_CATEGORY_ID,
   PORTS_CATEGORY_ID,
   TOBACCO_CATEGORY_ID,
   HONEY_CATEGORY_ID,
@@ -220,42 +220,42 @@ export default defineConfig({
             S.divider(),
 
             S.listItem()
-              .title('Liquers')
+              .title('Liqueurs')
               .icon(() => '🍹')
               .child(
                 S.documentTypeList('product')
-                  .title('Liquers')
+                  .title('Liqueurs')
                   .apiVersion('v2025-02-19')
-                  .filter(`_type == "product" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
+                  .filter(`_type == "product" && category._ref == "${LIQUEURS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
-              .title('Liquer Styles')
+              .title('Liqueur Styles')
               .icon(() => null)
               .child(
                 S.documentTypeList('tag')
-                  .title('Liquer Styles')
+                  .title('Liqueur Styles')
                   .apiVersion('v2025-02-19')
-                  .filter(`_type == "tag" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
+                  .filter(`_type == "tag" && category._ref == "${LIQUEURS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
                     S.initialValueTemplateItem('style-template', {
-                      categoryId: LIQUERS_CATEGORY_ID,
+                      categoryId: LIQUEURS_CATEGORY_ID,
                     }),
                   ]),
               ),
             S.listItem()
-              .title('Liquer Producers')
+              .title('Liqueur Producers')
               .icon(() => null)
               .child(
                 S.documentTypeList('company')
-                  .title('Liquer Producers')
+                  .title('Liqueur Producers')
                   .apiVersion('v2025-02-19')
-                  .filter(`_type == "company" && category._ref == "${LIQUERS_CATEGORY_ID}"`)
+                  .filter(`_type == "company" && category._ref == "${LIQUEURS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}])
                   .initialValueTemplates([
                     S.initialValueTemplateItem('company-template', {
-                      categoryId: LIQUERS_CATEGORY_ID,
+                      categoryId: LIQUEURS_CATEGORY_ID,
                     }),
                   ]),
               ),

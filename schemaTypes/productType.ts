@@ -4,7 +4,7 @@ import {
   BEERS_CATEGORY_ID,
   CIDERS_CATEGORY_ID,
   HONEY_CATEGORY_ID,
-  LIQUERS_CATEGORY_ID,
+  LIQUEURS_CATEGORY_ID,
   PORTS_CATEGORY_ID,
   SPIRITS_CATEGORY_ID,
   TOBACCO_CATEGORY_ID,
@@ -14,7 +14,7 @@ import {quantityField} from './fields/quantity'
 import {beerOptions} from './productOptions/beer'
 import {ciderOptions} from './productOptions/cider'
 import {honeyOptions} from './productOptions/honey'
-import {liquerOptions} from './productOptions/liquers'
+import {liquerOptions} from './productOptions/liqueurs'
 import {portOptions} from './productOptions/port'
 import {spiritOptions} from './productOptions/spirits'
 import {tobaccoOptions} from './productOptions/tobacco'
@@ -189,11 +189,11 @@ export const productType = defineType({
         return document?.category?._ref !== SPIRITS_CATEGORY_ID
       },
     }),
-    // Liquers Options
+    // Liqueurs Options
     defineField({
       ...liquerOptions,
       hidden: ({document}: {document: ProductDocument | undefined}) => {
-        return document?.category?._ref !== LIQUERS_CATEGORY_ID
+        return document?.category?._ref !== LIQUEURS_CATEGORY_ID
       },
     }),
     // Port Options
