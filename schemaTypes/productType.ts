@@ -6,6 +6,7 @@ import {
   HONEY_CATEGORY_ID,
   LIQUEURS_CATEGORY_ID,
   PORTS_CATEGORY_ID,
+  SPECIALTY_CATEGORY_ID,
   SPIRITS_CATEGORY_ID,
   TOBACCO_CATEGORY_ID,
   WINES_CATEGORY_ID,
@@ -19,6 +20,7 @@ import {portOptions} from './productOptions/port'
 import {spiritOptions} from './productOptions/spirits'
 import {tobaccoOptions} from './productOptions/tobacco'
 import {wineOptions} from './productOptions/wine'
+import {specialtyOptions} from './productOptions/specialty'
 
 export interface ProductDocument extends SanityDocument {
   category?: {
@@ -215,6 +217,13 @@ export const productType = defineType({
       ...honeyOptions,
       hidden: ({document}: {document: ProductDocument | undefined}) => {
         return document?.category?._ref !== HONEY_CATEGORY_ID
+      },
+    }),
+    // Specialty Product Options
+    defineField({
+      ...specialtyOptions,
+      hidden: ({document}: {document: ProductDocument | undefined}) => {
+        return document?.category?._ref !== SPECIALTY_CATEGORY_ID
       },
     }),
     defineField({
