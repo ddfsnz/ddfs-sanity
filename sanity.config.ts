@@ -58,6 +58,15 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
+              .title('Wine Catalog Settings')
+              .icon(() => null)
+              .child(
+                S.document()
+                  .title('Wine Catalog Settings')
+                  .schemaType('category')
+                  .documentId(WINES_CATEGORY_ID),
+              ),
+            S.listItem()
               .title('Wine Styles')
               .icon(() => null)
               .child(
@@ -99,6 +108,15 @@ export default defineConfig({
                   .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${BEERS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
+              ),
+            S.listItem()
+              .title('Beer Catalog Settings')
+              .icon(() => null)
+              .child(
+                S.document()
+                  .title('Beer Catalog Settings')
+                  .schemaType('category')
+                  .documentId(BEERS_CATEGORY_ID),
               ),
             S.listItem()
               .title('Beer Styles')
@@ -144,6 +162,15 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
+              .title('Spirits Catalog Settings')
+              .icon(() => null)
+              .child(
+                S.document()
+                  .title('Spirits Catalog Settings')
+                  .schemaType('category')
+                  .documentId(SPIRITS_CATEGORY_ID),
+              ),
+            S.listItem()
               .title('Spirit Styles')
               .icon(() => null)
               .child(
@@ -185,6 +212,15 @@ export default defineConfig({
                   .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${LIQUEURS_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
+              ),
+            S.listItem()
+              .title('Liqueur Catalog Settings')
+              .icon(() => null)
+              .child(
+                S.document()
+                  .title('Liqueur Catalog Settings')
+                  .schemaType('category')
+                  .documentId(LIQUEURS_CATEGORY_ID),
               ),
             S.listItem()
               .title('Liqueur Styles')
@@ -230,6 +266,15 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
+              .title('Port Catalog Settings')
+              .icon(() => null)
+              .child(
+                S.document()
+                  .title('Port Catalog Settings')
+                  .schemaType('category')
+                  .documentId(PORTS_CATEGORY_ID),
+              ),
+            S.listItem()
               .title('Port Styles')
               .icon(() => null)
               .child(
@@ -271,6 +316,15 @@ export default defineConfig({
                   .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${TOBACCO_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
+              ),
+            S.listItem()
+              .title('Tobacco Catalog Settings')
+              .icon(() => null)
+              .child(
+                S.document()
+                  .title('Tobacco Catalog Settings')
+                  .schemaType('category')
+                  .documentId(TOBACCO_CATEGORY_ID),
               ),
             S.listItem()
               .title('Tobacco Styles')
@@ -316,6 +370,15 @@ export default defineConfig({
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
               ),
             S.listItem()
+              .title('Honey Catalog Settings')
+              .icon(() => null)
+              .child(
+                S.document()
+                  .title('Honey Catalog Settings')
+                  .schemaType('category')
+                  .documentId(HONEY_CATEGORY_ID),
+              ),
+            S.listItem()
               .title('Honey Styles')
               .icon(() => null)
               .child(
@@ -357,6 +420,15 @@ export default defineConfig({
                   .apiVersion('v2025-02-19')
                   .filter(`_type == "product" && category._ref == "${SPECIALTY_CATEGORY_ID}"`)
                   .defaultOrdering([{field: 'name', direction: 'asc'}]),
+              ),
+            S.listItem()
+              .title('Specialty Products Catalog Settings')
+              .icon(() => null)
+              .child(
+                S.document()
+                  .title('Specialty Products Catalog Settings')
+                  .schemaType('category')
+                  .documentId(SPECIALTY_CATEGORY_ID),
               ),
             S.listItem()
               .title('Specialty Product Styles')
