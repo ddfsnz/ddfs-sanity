@@ -2,6 +2,7 @@ import {aboutType} from './aboutType'
 import {categoryType} from './categoryType'
 import {companyType} from './companyType'
 import {countryType} from './countryType'
+import {pdfsType} from './pdfsType'
 import {pageType} from './pageType'
 import {productType} from './productType'
 import {tagType} from './tagType'
@@ -11,6 +12,7 @@ export const schemaTypes = [
   categoryType,
   companyType,
   countryType,
+  pdfsType,
   pageType,
   productType,
   tagType,

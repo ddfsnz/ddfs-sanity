@@ -44,6 +44,15 @@ export default defineConfig({
                   .apiVersion('v2025-02-19')
                   .defaultOrdering([{field: 'title', direction: 'asc'}]),
               ),
+            S.listItem()
+              .title('Documents')
+              .icon(() => '📎')
+              .child(
+                S.documentTypeList('pdfs')
+                  .title('Documents')
+                  .apiVersion('v2025-02-19')
+                  .defaultOrdering([{field: 'name', direction: 'asc'}]),
+              ),
 
             S.divider().title('Product Categories'),
 
