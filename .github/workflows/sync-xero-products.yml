@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: '30 9,21 * * *' # Run twice daily at 9:30 AM and 9:30 PM UTC
+    - cron: '0 * * * *' # Run hourly
 permissions:
   contents: read
   actions: read
