@@ -1,6 +1,7 @@
 name: Xero Integration
 run-name: Sync products from Xero
 on:
+  workflow_dispatch:
   push:
     branches: [main]
   schedule:
